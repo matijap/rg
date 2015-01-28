@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<style>
+			html {
+				background: rgba(54, 54, 54, 1);
+				color: white;
+				padding: 100px;
+				font-family: sans-serif;
+				text-decoration: none;
+			}
+			h1 {
+				font-size: 30px;
+			}
+			a, a:visited {
+				color: yellow;
+			}
+			p {
+				font-size: 15px;
+				letter-spacing: 0.6px;
+				line-height: 20px;
+			}
+			.one-question {
+				margin-top: 30px;
+				margin-bottom: 30px;
+			}
+		</style>
+		<script src="jquery-1.11.2.min.js"></script>
+		<script>
+		$( document ).ready(function() {
+			var counter = 0;
+		    $('.one-question').each(function() {
+		    	$(this).prepend('<a name="link-' + counter + '"></a>');
+		    	$('.menu').find('ul').append('<li><a href="#link-' + counter + '">' + $(this).find('h1').text() + '</a></li>')
+				counter++;
+				$(this).append('<div><a href="#top">Back to top</a></div>')
+			});
+			var qCounter = $('.one-question').size();
+			$('.questions-covered').text(qCounter);
+			var totalCounter = $('.total-questions').text();
+			var percent = (qCounter / totalCounter) * 100;
+			$('.percentage').text(percent);
+		});
+					
+		</script>
+	</head>
+	<body>
+		<div class="menu">
+			<a name="top"></a>
+			<ul>
+			</ul>
+		</div>
+		<div>
+			<p>Ukupno pitanja: <span class="questions-covered"></span>/<span class="total-questions">64</span> (<span class="percentage"></span>%)</p>
+		</div>
+		<hr>
+		<div class="one-question">
+			<h1>
+				1.6 (5) Osnovni graficki pajplajn
+			</h1>
+			<p>
+				Funkcionisanje standardnog grafickog sistema se opisuje pojmom abstrakcije zvanom graficki pajplajn.
+				Pajplajn - zato sto transformacija iz matematickog modela u piksele ukljucuje vise koraka koji se izvrsavaju redom, tako da rezultati jednog koraka direktno budu prosledjeni sledecem.
+
+				SLIKA (strana 15)
+
+				Pajplajn moze da se posmatra kao crna kutija (detalji koraka nisu bitni).
+
+				U poslednjih par godina, su se pojavili novi nacini za transformaciju. Neki koraci pajplajna, a u nekim slucajevima i ceo pajplajn, zamenjunu programi koji se zovu shaderi. Danas je lako napisati shader koji oponasa funkcionalnost pajplajna, ali takodje danasnji shaderi su postali prilicno kompleksni, i izvrsavaju stvari koje je nije bilo zamislivo izvrsiti na grafickoj kartici.
+
+				Jedna od standardnih komponenti crne kutije je texture map. Koristeci texture mapping, mozemo fino obojiti svaku tacku nekog datog poligona. Na primer, kao sto bi zalepili nalepnicu na neki objekat. Sama povrsina objekta diktira kako ce ova nalepnica izgledati i kako ce se deformisati.
+				Sam izgled neke povrsine zaviri od takozvanih normalnih vektora (ili normala). To je u sustini vektor koji pada pod normalnim uglom na povrsinu na bilo koju tacku. Taj vektor se koristi da bi se proracunao kako ce se svetlo odbijati od povrsine. Posto se povrsina obicno predstavlja mrezom poligona, ovi vektori se obicno racunaju od tacke koja predstavlja ugaonu tacku nekog poligona.
+
+				Ukoliko na razlicitim tackama ne koristimo prave normale, to moze da rezultira tako da nam izgleda kao da je povrsina objekta zakrivljena u odnosu na nas.
+
+				4 glavna dela pajplajna:
+				1) procesiranje geometrije, tacaka i transformacije
+				2) procesiranje trouglova (pomocu rasterizacije) i kreiranje fragmenata
+				3) teksturisanje i procesiranje svetlosti
+				4) procesiranje ovih fragmenata radi sklapanja konacne slike
+
+				U sustini, redosled procesiranja stavki ne mora da bude po ovoj listi. Bitan je samo da krajnji rezultat bude isti kao da je ovaj redosled koriscen.
+
+				Procesiranje geometrije i tacaka je zaduzeno za uzimanje geometrijskog opisa objekta koji je predstavljen podacima o mrezi tacaka poligona kao i njihovih transformacija, i preracuna gde ce se tacke nalaziti nakon transformacije. 
+				Procesiranje trouglova ce uzeti mrezu poligona i pomocu rasterizacije pretvoriti u kolekciju piksela.
+				Zatim pikseli dobijaju boju. Ako im je dodeljeno vise boja koristice se ona najbliza gledaocu. 
+				U danasnjim modernih sistemima sav ovaj posao rade GPU.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				1.11 (7) Klasifikacija racunarske grafike u aplikacijama
+			</h1>
+			<p>
+				Neki kriterijumi:
+
+				Da li se slika na ekranu menja svakog trenutka (kao u modernim igrama) ili retko (kao u word procesorima)?
+				Da li se koordinate koje program koristi izrazavanju pomocu pokretnog zareza (kao u igrama) ili pomocu piksel koordinata (kao u prvim programima za crtanje)?
+				Obicno postoji model podataka koji treba da se predstavi. Da li je za transformaciju modela zaduzena kamera (kao u modernim igrama) ili nesto drugo (kao npr parce teksta koje se vidi u word procesorima)? U svakom slucaju, potrebno je iseci, tj ne prikazati deo podataka koji je nije vidljiv.
+				Da li objekti koji se vide imaju neko ponasanje vezano za njih? Npr dugmici i meniji na GUI-ju, nasuprot likovima iz video igara
+				Da li je potrebno prikazati realisticnu sliku objekta, ili abstraknu? Npr dijagram elektricnog kola ne mora da bude realistican.
+				Da li floating point koordinate imaju mere (feets, cm...) ili su jednostavno brojevi? Prednost kad imaju mere jeste to da program moze da se prilagodi rezoluciji ekrana.
+
+				2.2 2D Graficki pajplajn
+				Kao sto znamo, graficka platforma predstavlja vezu izmedju same aplikacije i hardvera, i vezu izmedju outputa (intrukcije za GPU) i inputa (user interakcija).
+				Uobicajeno je da se neki podaci, koji se nazivaju application model (AM) budu predstavljeni nekom renderovanom slikom, tako da korisnik moze da manipulise. Sama aplikacija radi zajedno sa window managerom, koji brine o povrsini koja je dodeljena aplikaciji za prikazivanje, i interakciji sa window chrome stvarima (title, minimize, close...). Fokus aplikacije je na client area, koja predstavlja unutrasnjost prozora.
+				Client area se moze podeliti na 2 dela, deo sa UI kontrolama (npr meni) i viewportom, gde se nalazi rendering scene (tu se nalazi render od AM). Za to je zaduzen scene generator modul.
+				Scena u principu predstalvja kolekciju 2D oblika.
+				Uzmimo za primer aplikaciju za dizajn namestaja. AP sadrzi sve podatke koji su vezani za jedan komad namestaja, cak i podatke o proizvodjacu, boji, tezini... Zadatak scene generatora je da odluci sta je od ovih podataka bitno za prikaz scene.
+				Sama scena moze da sadrzi sve sto je opisano u AM ili moze da sadrzi jedan deo.
+				Takodje, moguce je da AM ne sadrzi geometrijske podatke uopste (kao na primer u information visualization). Tu se ubraja neka statistika i pie chartovi
+
+				SLIKA
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				2.3 (9) Evolucija 2D Grafike
+			</h1>
+			<p>
+				Kao i programski jezici, i graficke platforme su pretrpele istu evoluciju. Svaka nova generacija nudi veci nivo abstrakcije, prihvatajuci na sebe zadatke koji su bili deo same aplikacije.<br><br>
+
+				Integer to Floating point koordinate<br>
+				Zaceci grafike i platformi su najpre nudili mogucnost da se boje pikseli na pravougaonom "platnu". To su mogli biti krugovi, poligoni, ekpise, bitmapi... Izgled svake primitive je bio kontrolisan pomocu atributa, npr brush atribut bi kontrolisao unutrasnjost primitive, a pen outline.
+				Primer: analogni sat (tri skazaljke i sam sat)
+				Svaka primitiva bi se prikazala pomocu funckije koja dobije koordinate i atribute
+				Sledeci problem je, kako ce se ovaj sat prikazati na razlicitim uredjajima? Krajnji rezultat zavisi od samog uredjaja i rezolucije, tj DPI. (resolution dependence).
+				Ovaj problem je resen uvodjenjem ideje koja je dugo bila prisutna u vektorskoj grafici, tj koriscenjem pokretnog zareza za koordinate sa ciljem da prikaze geometriju slike bez gubitka kvaliteta. Postoje dve vrste: physical (cm i prave mere) i abstract (zavisi od aplikacije).<br><br>
+
+				Immediate-Mode vs Retained mode<br>
+
+				Svi graficki sistemi su imali napredak sa integer na floating point, medjutim napravila se podela.<br><br>
+
+				Immediate mode<br>
+				Jawa.awt, Apple Quartz
+				Ove platforme ne sadrze nikakve zapise niti informacije o primitivama koje aplikacija ima. Kada se metoda, npr FillEllipse pozove, ona se odmah (zato naziv immediate) crta tako sto se njene koordinate mapiraju u koordinate uredjaja i njeni pikseli se iscrtavaju. Nakon iscrtavanja vraca se kontrola aplikaciji. Model je jedostavan: da bi se uvela bilo koja promena scene generator mora da prodje kroz ceo AM i da regenerise sve primitive.<br><br>
+
+				Retain Mode<br>
+				Neki developeri traze platforme koje ce ih osloboditi sto vise zadataka je moguce. RM zato zadrzava prikaz scene u specijalnoj bazi zvanoj scene graph.Ovde sam poziv ka API-ju ne prouzrokuje iscrtavanje vec umesto toga apdejtuje samu scenu koja se nalazi u bazi.
+				Ui kontrole (zvane i widgeti) su objekti koji su nastali od templatea, i koji imaju nasledjen look and feel. Ova ideja o master template i instancama je nastala od Sutherlandovog Sketchpad-a.
+				Ovde look znaci sam izgled (boja, font, senka) a look znaci ponasanje samog objekta u odnosu na interakciju korisnika (npr dugme da posivi kad je disablovano, tekst na hover...)
+				Vecina RM platformi sadrzi layout managere koji sami imaju nacin da rasporede dimenzije, prostor na vec uredjen i uniforman nacin. Danas je skoro nemoguce pronaci neku platformu koja ne hendla sve potrebe ovog tipa - interakcija sa menijima, dugmicima, skrol barovima....<br><br>
+
+				Procedural vs Declarative specifikacija<br>
+				Gracifke platforme nude dve razlicite tehnike za razvoj UI-ja.<br><br>
+
+				Proceduralni kod (DirectX, Java Swing, Microsot WPF)<br>
+				Deklarativna specifikacija (SVG, XAML)<br><br>
+
+				Najnizi layer - Object Orijented API<br>
+				Klase koje nude svu WPF funkcionalnost. Moguce je koristiti Microsoftove aplikacije kao C# ili Visual Basic, ili IronRuby npr za specifikaciju izgleda i ponasanja aplikacije. Cela WPF aplikacija se moze kreirati pomocu ovog.<br>
+
+				Srednji layer - XAML<br>
+				Koristi deklarativnu sintaksu i to je razumljiviji nacin za prikaz API funkcionalnosti. Mogu da je koriste svi koji razumeju HTML ili XML.
+
+				Visoki layer: Tools<br>
+				Pomocu ovog layera developeri i dizajneri mogu da generisu saml XAML, cak i koristeci alate za crtanje grafike (Ilustrator, i sl).
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				2.4 (10) Specifikacija 2D scene u WPF - Pitanje
+			</h1>
+			<p>
+				Napravicemo sat koristeci XAML. XAML je jezik koji koristi tagove kao i XML.Medjutim, postoje elementi koji nisu namenjeni za XAML - kao sto su npr meniji, gridovi za sheetove, dugmici, text inputi...
+				U punokrvnoj aplikaciji, izgled je sacinjen od:<br>
+				layout panela<br>
+				UI kontrola<br>
+				Canvas elementa koji predstavlja viewport.<br>
+				U ovom primeru cemo napraviti samo Canvas.<br><br>
+
+				Canvas<br>
+				xmlns-...
+				ClipToBounds - true - gde ovo predstavlja flag da li ce se kontent crtati van samog prozora.<br>
+
+				Zapocemo crtanjem 0 0 koordinata i x i y koordinathih linija. Ovde primecujemo problem - sto npr 4 x 4 polje nece izgledati uvek isto jer ne postoji standardna dimenzija. Ovde mozemo da koristimo abstractni koordinatni sistem.
+				Ovi elementi ce se overlapovati (2.5D).<br>
+
+				Zapocinjemo sa elipsom.<br>
+
+				Ellipse<br>
+				Canvas.Left-"-10" Canvas.Top-"-10"<br>
+				Width-"20" Height-"20"<br>
+				Fill-"grey" /><br><br>
+
+				Koji ce se problem javiti? Prvo, nas krug ce biti premali. Drugo, prikazace se samo donja desna strana kruga. Ovo je problem direktnog primenjivanja koordinata sa strane graficke platforme.
+				Za potrebe naseg sata, hajde da pretpostavimo da sat treba da bude 1 inc u precniku i da sat treba da se pojavi i gornjem levom uglu kanvasa.
+				Da bi smo izveli da se sat pravilo prikazuje, mozemo da koristimo WPF canvas sistem koordinata - koji koristi "fizicki" model jer mu jedinica mera predstavlja 1/96 inca. Iako je ova strategija dobra, postoje jos nacina da se postigne nezavisnost rezolucije:<br>
+				Software-platform nezavisnost - koristeci koordinatni sistem specificke graficke platforme se vezujemo samo za tu platformu i rizikujemo da u buducnosti budemo primorani da portujemo
+				Display-form faktor nezavisnost: Ovde form factor predstavlja sam uredjaj (tablet, telefon,laptop).<br>
+				Tako da dolazimo do jednog od glavnih principa:<br>
+				Koordinate - Sistem osnovni princip: Uvek odaberi koordinatni sistem u kojoj ce se sam rad biti najlaksi, a koristi transformacije da bi se povezao sa drugim koordinatnim sistemima.<br><br>
+
+				Dakle sada kada znamo koliko zaista nas krug ima precnik (20 jedinica, sto je oko 1/4 inca, sto je malo), i kad znamo gde je sam center (gore levo), pokusacemo da primenimo transformacije koristeci display transformation.
+				Posto znamo da nam je inc 96 jedinica, a precnik kruga 20, koristeci 96/20 dolazimo do broja 4.8, za koliko puta zelimo da uvecamo nase koordinate.<br><br>
+
+				Takodje, hocemo da pomerimo centar. Posto zelimo da centriramo krug, 96/2 = 48, dolazimo do broja od 48 jedinica mera za koje hocemo da pomerimo centar od gore i od levo.<br>
+
+				Koristeci<br>
+				Canvas.RenderTransform<br>
+				ScaleTransform ScaleX-"4.8" ScaleY-"4.8"<br>
+				CenterX-"48" CenterY-"48"<br>
+
+				Na ovaj nacin cemo dobiti krug koji se nalazi u levom gornjem uglu kanvasa i koji je dovoljno skaliran.<br>
+
+				Sada hocemo da napravimo skazaljke. Kako se nebi ponavljali, zelimo da napravimo jedan template za skazaljku i da ga primenimo na veliku i malu, koje ce ga instancirati.<br>
+
+				ControlTemplate:Key-"ClockHandTemplate"<br>
+				Polygon<br>
+				Points...<br>
+				Fill...<br>
+
+				Zatim, ispod koda koji je dodao elipsu, dodajemo<br>
+
+				Control Name-"MinuteHand"<br>
+				Template-"{Static Resource ClockHandTemplate}"<br><br>
+
+				Zatim zelimo da dodamo skazaljku za sat. Za ovo nam je potreban modeling transformation, da se druga skazaljka ne bi renderovala preko prve, tj da bi smo je rotirali za 45 stepeni.<br><br>
+
+				Control Name-"HourHand"<br>
+				Template-"{Static Resource ClockHandTemplate}"<br>
+				Control.RenderTransform<br>
+				ScaleTransform ScaleX-"1.7" ScaleY-"0.7" CenterX-"0" CenterY-"0" (moramo da napomenemo centar rotacije)<br>
+				RotateTransform Angle-"45"<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				5.1 (13) Culo vida i implikacije na racunarsku grafiku
+			</h1>
+			<p>
+				Culo vida i njegova mogucnost da paralelno procesiraju informacije omogucavaju da velika kolicina informacija bude preneta sa racunara na korisnika. Tako da culo vida (visual system) je veoma tolerantno na lose podatke - sto znaci da ce covek videti smisao u slici gde je samo cica glisa nacrtan. Oko je veoma osetljivo na sitne detalje - npr jedan crveni piksel u 100000 zelenih bi strcao.<br>
+				Visual debugging princile - uvek koristi visual displays (npr monitore) koji ce ti pomoci da debagujes i razumes graficke programe<br>
+				Output koji se prenosi sa kompjutera na korisnika je obicno u vidu svetla koje se emituje. Posto je i druge vrste interakcije, kao npr dodir, zvuk...Svetlost je dobra jer na nju ne uticu vetar, prepreke i putuje iskljucivo  pravcu na kom je krenula.<br>
+				Bilo koji model procerisanja nekih vizualnih stimulacija zavisi ne od samo trenutnog stimulisanja vec i od prethodnih. Primer plaza - svetlo - restoran. <br><br>
+				Visual system<br>
+				Sastoji se od oka, ocnog nerva i visual cortexa. Cortex je zaduzen za brightness, promene u orijentaciji, boji i spatial frenkvencije (promene razlika izmedju crnog i belog po centimetru). Oko je osetljivo na razlike u boji dve stvari koje su blizu - ako su daleko ovo nece biti detektovano. <br>
+				Visual system ima svojih mana - npr slabo prepoznaje paralelne linije, slabo razlikuje identicne ali boje koje nisu jedna do druge.<br>
+				Npr dalje odlicno da primeti malu razliku: crni kamen na belom pesku ali zato grain na starom filmu ne primecuje. Takodje je veoma osetljiv na pokrete, kao i na detekciju stvari pod razlicitim sveltosnim uslovima (npr uvek ce prepoznati hranu i po dnevnom i nocnom svetlu). Kao i ako predmet nije ceo osvetljen.<br>
+				Sto se grafike tice, glavno pitanje cesto je, da li je slika koju sam prikazao dovoljno blizu idealnoj slici? Postoji tacan nacin da se to izmeri, a to je pomcu sum-squared difference, L2. uzme se razlika u boji izmedju piksela, kvadrira, zatim sabere, i zatim uradi koren od toga.<br>
+				Takodje, dosta posla je ulozeno u razvoj funkcije koja ce predstaviti koliko su zaista razlicite neke dve slike. Postoje neka korisna pravila koja mogu pomocu. Npr, visual system je osetljiviji na radiance greske (jedinica mere svetla) u tamnim nego u svetlim uslovima. Ukoliko je moguce, uvek treba koristiti gradijente (lokale promene u intezitetu) nego absolutne vrednosti. <br>
+				Kako je ovo primenljivo na aplikacije?<br>
+				Covekovo rauzmevanje visualnog sistema je lose.<br>
+				Lako je prilagoditi sliku da utice na percepciju na retinalnom nivou je lako, dok prilagodjavanje takvo da utice na to kako je ceo objekat dozivljen je tesko i sklono greskama. Postoji i problem interakcije izmedju low (vidim promene u osvetljenu) i high level vision-a (vidim povrsinu).<br>
+				Primer sa zamenom jednog slova - i kako je moguce da vid radi isto tako<br>
+				Mozda je najpreciznije reci da nas visual system konstruise model sveta na osnovu podataka koje prima - takvih da ocigledni konflikti budu odbaceni (npr kad se neko nasloni pa se ne vidi gelender, mi znamo da ga ima iza)<br><br>
+				Oko<br>
+				Oko, tj ocni nerv predstavlja ogranicujuci faktor kod razvoja npr uredjaja - prikaz piksela sa brightnesom koje oko ne moze da vidi nema svrhu.<br>
+				Levo i desno oko vidi razlicito -ali se slike spajaju.<br>
+				Emulacija vida moze biti predstavljena sa jednim izvorom svetlosti, socivom i povrsinom koja prima svetlost. Svetlo se emituje sa izvora na vise strana, u socivima se skuplja i lomi pod uglom i svi zraci se spajaju u jednoj tacki na povrsini. Ako je tacka tacno na povrsini, objekat je u fokusu. <br>
+				Spajane zraka zavisi od indeksa prelamanja. <br>
+				Takodje, oko moze da koristi focus/defocus da oseti razdaljinu izmedju oka i objekta, bar za objekte koji su blizu. Svi objekti koji su u dometu fokusa se nazivaju depth of field. <br>
+				Oko takodje sadrzi receptore - rods and cones / za svetlo noc, u razmeri 20 na 1.<br>
+				Bitni elementi su jos fovea - gde je kolicina conesa visoka. Takodje postoji i optic disc, gde se ocni nerv spaja sa okom. Tu nema rodsa i consa.<br>
+				Nedavno je otkrivena nova vrsta receptora - medjutim oni ne sluze ocnom zivcu vec se koriste za circardian rhytm kod sisara.<br>
+				Brightnress je rec koja se koristi da definise osecaj, tj percepciju sveta. Tj intezitet, predstavljem u radiance-ima. Jedan dobar displej mora da moze da prikaze razlicit spektar brightnessa.<br>
+				Receptori nisu nezavisni. Kada svetlo stigne na jedan, to ce uticati i na receptore oko njega. To se zove lateral inhibition.<br>
+				Kako je sve ovo primenljivo na aplikacije?<br>
+				Mogucnost visualnog sistema to detektuje udaljenost znaci to i da mozemo da imamo razlicit osecaj daljine na oba oka. To je osnova 3D simulacije na danasnjim ekranima. 
+				Takodje posto se oko adaptira na brightess, i ima ogranicen domet nivoa svetlosti, znaci da nekad nije potrebno konstruisati savsenu sliku sa velikim razlikama izmedju piksela. Npr kada imamo sunce koje bljesti, detalje mozemo da izostavimo jer oko nece videti tj odbacice sve sto nije bljestavo.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				5.4 (14) - Opticke varke, postojanost, kontinuitet, senke i kretanje
+			</h1>
+			<p>
+				Ljudsko oko moze da identifikuje poznate predmete pod razlicitim osvetljenjima. Na primer, automobil ce biti prepoznat i danju i nocu, nebitno da li stojim pored njega ili ispred (ne razmiljsajuci da je promenio boju i oblik). Iako zaista vidimo drugacije stvari, kao sto je boja auta, ne verujemo da je boja promenjena. To je color constancy. Isto tako, ne verujemo da je promenjen oblik ili velicina (shape and size). Iako je korisna - konstantnost ima i svoje mane, kao npr nemogucnost da precizno primetimo iste boje ako nisu jedna pored druge.
+				Sto se primena u aplikacijama tice - to povlaci sa sobom razlicite gama vrednosti za monitore, bioskope itd. Ukoliko je potrebno porediti dva rendera slike, najbolje je okruziti ih neutralno sivom bojom.
+				Takodje, sto se brightnesa tice, relativni brigthness je bitniji od absolutnog (zato je detekcija ivica veoma bitna).
+
+				Zatim, kada vidimo neku sliku koja je isprekidana, tj nestaje iza nekog objekta a zatim se ponovo pojavljuje, visual system ce predstaviti taj objekat kao jednu celinu. 
+				Slika 
+
+				Primena u aplikacijama - Npr kada hocemo da prikazemo ne fotorealisticnu sliku vec nameru autora slike, tj cilj je da privuce paznju na poseban detalj. 
+
+				Senke nam pomazu da procenimo udaljenost nekog objekta od oka koje nisu na zemlji. 
+				slika sa loptama
+
+				Ponekad nije ni bitno da senka odgovara objektu (npr zbog perspektive).
+				Slika sa kockama
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				6.1.2 (15) Osnovi planiranja scene, mesha, i osvetljenja na primeru piramide
+			</h1>
+			<p>
+				Svaki objekat na 3D sceni karakterise to sto odbija odredjenu kolicinu svetlosti. Svaka tacka prima svetlost iz samog izvora svetlosti, kao i svetlost koja je odbijena od ostalih tacaka. Proracun ovoga zahteva hardver koji cak i danas nije dostupan. Zato se generisanje grafike sluzi tehnikama koje priblizno docaravaju sliku. Jedan od najbitnijih algoritama se zove fixed-function 3D graphic pipeline. Ovaj algoritam renderuje trougnalne mreze. Softveri koji koriste ovaj algoritam su na primer OpenGL i Direct3D. 
+				U ovom primeru cemo generisati piramidu.
+
+				Pocinjemo sa generisanjem poda. Pod se nalazi na xz koordinati. Piramida ce se nalaziti tako da se njen centar nalazi na 0 0 0.
+
+				Zatim definisemo sirinu i duzinu viewporta. Sve sto ima veze globalno sa scenom se nalazi pod tagom Viewport 3d.
+
+				Za viewport nam treba:
+				kamera
+				svetlo
+
+				Kamera ce biti Perspective kamera. Potrebno je podesiti joj poziciju (x, y,z), pravac gledanja, ugao gledanja.
+				Position, LookDirection, FieldOfView.
+
+				Svetlo ce biti ambijentalno. To je jednostavno svetlo koje osvetljava na sve strane, nezavisno od ugla.
+				AmbientLigt Color = white
+
+				Sledeci korak je generisanje piramide. Za to pravimo resurs koji moze da se koristi na vise mesta. Za to cemo koristiti Mesheve.
+				Za kreiranje resursta, koristimo MeshGeometry3D tag. U njemu definisemo kljuc, koordinate, kao i redosled pod kojim se koordinate iscrtavaju. Ukupno nam je potrebno devet tacaka, za tri trougla.
+				MeshGeometry3D key = "piramida"
+				Position
+				Indices
+
+				Zatim je potrebno definisati materijale. Zelimo da piramida bude zuta spolja a crvena iznutra. Za to koristimo tag 
+				Diffuse materijal key = "front" color = "yellow"
+				Diffuse materijal key = "Back" color = "red"
+
+				Trouglove smestamo pod kljuc GeometryModel3D. Tu navodimo kljuc, da bi smo pozvali oblik koji smo definisali.
+				GeometryModel3D
+				Geometry: piramida
+				Materijal: front
+				BackMaterijal: back
+
+				To je dovoljno za generisanje piramide sa sve tri strane, materijalom i svetlom.
+
+				Medjutim, svetlo nije dovoljno dobro. U stvarnom svetu svetlo nije tako konstanto, zavisi od orijentacije, smera L, refleksije... Zato ambient light menjamo za point light. To znaci da sve sve tacke na sceni primiti svetlo sa jednog izvora.
+				Umesto AmbientLight pisemo
+				DirectionalLight color = white Direction = 1, -1, 1
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				6.2.2 (16) Lambertovo kosinusno pravilo
+			</h1>
+			<p>
+				Ovde je bitno Lambertovo kosinusno pravilo.
+				I = Idir cos0
+				To sluzi za izracunavanje inteziteta svetlosti koja se odbija od materijala.
+
+				Intezitet predstavlja neku vrstu merenja jacine svetlosti, gde sto jaci intezitet to vise svetla. Intezitet nije definisan ni po internacionalnim standardima vec predstavlja meru za kolko svetla dolazi do ove tacke.
+				Slika ugla
+				6.15
+
+				Problem sa formulom je sto ne moze da simulira sjajne uglacane povrsine (npr koje pod odredjenim uglom imaju istaknuto svetlo na nekoj tacki).
+				Takodje, pravilo racuna da se svo svetlo odbija od materijala. U praksi, nesto svetla ce se upiti.
+
+				Pravilo ima dve karakteristike:
+				odbijena svetlost je nezavisna od ugla posmatranja
+				zavisi samo od kosinusa ugla izmedju dolazeceg svetla pravca l i normale na tacki u kojoj se odbija (primer sa svetlom na tabli, odakle god gledamo isto je)
+				U teoriji, lambertovo pravilo treba da se primeni za svaki piksel na povrsini sto nije realno zbog zahtevnosti. Umesto toga se vrsi racun samo za jednu kljucnu odabranu tacku na trouglu, i ostatak trougla se puni tom bojom. To se zove flat (constant) shading
+			</p>
+		</div>
+
+	</body>
+</html>
