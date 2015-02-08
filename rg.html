@@ -39,7 +39,22 @@
 			$('.questions-covered').text(qCounter);
 			var totalCounter = $('.total-questions').text();
 			var percent = (qCounter / totalCounter) * 100;
+			percent = Math.floor(percent)
 			$('.percentage').text(percent);
+			var remaining = totalCounter - qCounter;
+			$('.questions-remaining').text(" (ostaje: " + remaining + ") ");
+			var h1counter = 1;
+			$('.menu').find('ul').find('a').each(function() {
+				var currentText = $(this).text();
+				$(this).text(currentText + " (" + h1counter + ".)");
+				h1counter++;
+			});
+			h1counter = 1;
+			$('h1').each(function() {
+				var currentText = $(this).text();
+				$(this).text(currentText + " (" + h1counter + ".)");
+				h1counter++;
+			});
 		});
 					
 		</script>
@@ -51,71 +66,105 @@
 			</ul>
 		</div>
 		<div>
-			<p>Ukupno pitanja: <span class="questions-covered"></span>/<span class="total-questions">64</span> (<span class="percentage"></span>%)</p>
+			<p>Ukupno pitanja: <span class="questions-covered"></span>/<span class="total-questions">38</span><span class="questions-remaining"></span> (<span class="percentage"></span>%)</p>
 		</div>
 		<hr>
 		<div class="one-question">
 			<h1>
-				1.6 (5) Osnovni graficki pajplajn
+				4 (1.4) Ciljevi, resursi, i abstrakcije u racunarskoj grafici
+			</h1>
+			<p>
+				U bilo kojoj simulaciji, najpre je potrebno prepoznati fiziku ili matematicke procese koji se nalaze ispod toga, a zatim odluciti koja pribliznost ce nam doneti najbolje rezultate (goals), ako znamo ogranicenja vremena, procesora i ostalih faktora (resursa).<br><br>
+
+				Ovaj princip vazi i za 2D i za 3D rendere. U prvom slucaju, mozda fizika nije neophodna, ali umesto toga bi uskocila percepcija dizajna. Za ovo mozemo da koristimo wise-modeling principle:
+				Kada se modeluje neka situacija, potrebno je najpre rezumeti samu situaciju i ciljeve, zatim odabrati dobru rich-enough abstrakciju, i zatim odabrati nacin prezentovanja da bi se sve prikazalo u okviru dozvoljenih resursa. Kada je ovo gotovo, testirati.<br><br>
+
+				Naucnik po imenu Barzel smatra da vecina fizickih modela u grafici dolaze u tri dela:<br>
+				1) fizicki model<br>
+				2) matematicki model<br>
+				3) numericki model<br>
+				U 2D i 3D grafici, je veoma bitno da se na vreme utrdi eventualni cilj. To obicno predstavlja neku komunikaciju, i to obicno sa korisnikom. Na prostom primeru, posto ljudsko oko ne moze da vidi x-ray, nije potrebno simularati ovo u grafici.<br>
+				Ovo vodi do principa koji kaze:<br>
+				Uvek treba razmotriti uticaj ljudskog visualnog sistema na probleme i modele<br>
+				Takodje bitna stvar je da stvari koje hocemo da prikazemo moraju biti razumno velike, ne mozemo da trazimo od korisnika da klikne na neki poseban piksel na monitoru
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				5. (1.6) Osnovni graficki pajplajn
 			</h1>
 			<p>
 				Funkcionisanje standardnog grafickog sistema se opisuje pojmom abstrakcije zvanom graficki pajplajn.
-				Pajplajn - zato sto transformacija iz matematickog modela u piksele ukljucuje vise koraka koji se izvrsavaju redom, tako da rezultati jednog koraka direktno budu prosledjeni sledecem.
+				Pajplajn - zato sto transformacija iz matematickog modela u piksele ukljucuje vise koraka koji se izvrsavaju redom, tako da rezultati jednog koraka direktno budu prosledjeni sledecem.<br><br>
 
-				SLIKA (strana 15)
+				SLIKA (strana 15)<br><br>
 
-				Pajplajn moze da se posmatra kao crna kutija (detalji koraka nisu bitni).
+				Pajplajn moze da se posmatra kao crna kutija (detalji koraka nisu bitni).<br>
 
-				U poslednjih par godina, su se pojavili novi nacini za transformaciju. Neki koraci pajplajna, a u nekim slucajevima i ceo pajplajn, zamenjunu programi koji se zovu shaderi. Danas je lako napisati shader koji oponasa funkcionalnost pajplajna, ali takodje danasnji shaderi su postali prilicno kompleksni, i izvrsavaju stvari koje je nije bilo zamislivo izvrsiti na grafickoj kartici.
+				U poslednjih par godina, su se pojavili novi nacini za transformaciju. Neki koraci pajplajna, a u nekim slucajevima i ceo pajplajn, zamenjunu programi koji se zovu shaderi. Danas je lako napisati shader koji oponasa funkcionalnost pajplajna, ali takodje danasnji shaderi su postali prilicno kompleksni, i izvrsavaju stvari koje je nije bilo zamislivo izvrsiti na grafickoj kartici.<br>
 
-				Jedna od standardnih komponenti crne kutije je texture map. Koristeci texture mapping, mozemo fino obojiti svaku tacku nekog datog poligona. Na primer, kao sto bi zalepili nalepnicu na neki objekat. Sama povrsina objekta diktira kako ce ova nalepnica izgledati i kako ce se deformisati.
-				Sam izgled neke povrsine zaviri od takozvanih normalnih vektora (ili normala). To je u sustini vektor koji pada pod normalnim uglom na povrsinu na bilo koju tacku. Taj vektor se koristi da bi se proracunao kako ce se svetlo odbijati od povrsine. Posto se povrsina obicno predstavlja mrezom poligona, ovi vektori se obicno racunaju od tacke koja predstavlja ugaonu tacku nekog poligona.
+				Jedna od standardnih komponenti crne kutije je texture map. Koristeci texture mapping, mozemo fino obojiti svaku tacku nekog datog poligona. Na primer, kao sto bi zalepili nalepnicu na neki objekat. Sama povrsina objekta diktira kako ce ova nalepnica izgledati i kako ce se deformisati.<br>
+				Sam izgled neke povrsine zaviri od takozvanih normalnih vektora (ili normala). To je u sustini vektor koji pada pod normalnim uglom na povrsinu na bilo koju tacku. Taj vektor se koristi da bi se proracunao kako ce se svetlo odbijati od povrsine. Posto se povrsina obicno predstavlja mrezom poligona, ovi vektori se obicno racunaju od tacke koja predstavlja ugaonu tacku nekog poligona.<br>
 
-				Ukoliko na razlicitim tackama ne koristimo prave normale, to moze da rezultira tako da nam izgleda kao da je povrsina objekta zakrivljena u odnosu na nas.
+				Ukoliko na razlicitim tackama ne koristimo prave normale, to moze da rezultira tako da nam izgleda kao da je povrsina objekta zakrivljena u odnosu na nas.<br><br>
 
-				4 glavna dela pajplajna:
-				1) procesiranje geometrije, tacaka i transformacije
-				2) procesiranje trouglova (pomocu rasterizacije) i kreiranje fragmenata
-				3) teksturisanje i procesiranje svetlosti
-				4) procesiranje ovih fragmenata radi sklapanja konacne slike
+				4 glavna dela pajplajna:<br>
+				1) procesiranje geometrije, tacaka i transformacije<br>
+				2) procesiranje trouglova (pomocu rasterizacije) i kreiranje fragmenata<br>
+				3) teksturisanje i procesiranje svetlosti<br>
+				4) procesiranje ovih fragmenata radi sklapanja konacne slike<br><br>
 
-				U sustini, redosled procesiranja stavki ne mora da bude po ovoj listi. Bitan je samo da krajnji rezultat bude isti kao da je ovaj redosled koriscen.
+				U sustini, redosled procesiranja stavki ne mora da bude po ovoj listi. Bitan je samo da krajnji rezultat bude isti kao da je ovaj redosled koriscen.<br><br>
 
-				Procesiranje geometrije i tacaka je zaduzeno za uzimanje geometrijskog opisa objekta koji je predstavljen podacima o mrezi tacaka poligona kao i njihovih transformacija, i preracuna gde ce se tacke nalaziti nakon transformacije. 
-				Procesiranje trouglova ce uzeti mrezu poligona i pomocu rasterizacije pretvoriti u kolekciju piksela.
-				Zatim pikseli dobijaju boju. Ako im je dodeljeno vise boja koristice se ona najbliza gledaocu. 
+				Procesiranje geometrije i tacaka je zaduzeno za uzimanje geometrijskog opisa objekta koji je predstavljen podacima o mrezi tacaka poligona kao i njihovih transformacija, i preracuna gde ce se tacke nalaziti nakon transformacije. <br>
+				Procesiranje trouglova ce uzeti mrezu poligona i pomocu rasterizacije pretvoriti u kolekciju piksela.<br>
+				Zatim pikseli dobijaju boju. Ako im je dodeljeno vise boja koristice se ona najbliza gledaocu. <br>
 				U danasnjim modernih sistemima sav ovaj posao rade GPU.
 			</p>
 		</div>
 		<div class="one-question">
 			<h1>
-				1.11 (7) Klasifikacija racunarske grafike u aplikacijama
+				6. (1.7) Odnos racunarske grafike sa umetnoscu, dizajnom i percepcijom
 			</h1>
 			<p>
-				Neki kriterijumi:
-
-				Da li se slika na ekranu menja svakog trenutka (kao u modernim igrama) ili retko (kao u word procesorima)?
-				Da li se koordinate koje program koristi izrazavanju pomocu pokretnog zareza (kao u igrama) ili pomocu piksel koordinata (kao u prvim programima za crtanje)?
-				Obicno postoji model podataka koji treba da se predstavi. Da li je za transformaciju modela zaduzena kamera (kao u modernim igrama) ili nesto drugo (kao npr parce teksta koje se vidi u word procesorima)? U svakom slucaju, potrebno je iseci, tj ne prikazati deo podataka koji je nije vidljiv.
-				Da li objekti koji se vide imaju neko ponasanje vezano za njih? Npr dugmici i meniji na GUI-ju, nasuprot likovima iz video igara
-				Da li je potrebno prikazati realisticnu sliku objekta, ili abstraknu? Npr dijagram elektricnog kola ne mora da bude realistican.
-				Da li floating point koordinate imaju mere (feets, cm...) ili su jednostavno brojevi? Prednost kad imaju mere jeste to da program moze da se prilagodi rezoluciji ekrana.
-
-				2.2 2D Graficki pajplajn
-				Kao sto znamo, graficka platforma predstavlja vezu izmedju same aplikacije i hardvera, i vezu izmedju outputa (intrukcije za GPU) i inputa (user interakcija).
-				Uobicajeno je da se neki podaci, koji se nazivaju application model (AM) budu predstavljeni nekom renderovanom slikom, tako da korisnik moze da manipulise. Sama aplikacija radi zajedno sa window managerom, koji brine o povrsini koja je dodeljena aplikaciji za prikazivanje, i interakciji sa window chrome stvarima (title, minimize, close...). Fokus aplikacije je na client area, koja predstavlja unutrasnjost prozora.
-				Client area se moze podeliti na 2 dela, deo sa UI kontrolama (npr meni) i viewportom, gde se nalazi rendering scene (tu se nalazi render od AM). Za to je zaduzen scene generator modul.
-				Scena u principu predstalvja kolekciju 2D oblika.
-				Uzmimo za primer aplikaciju za dizajn namestaja. AP sadrzi sve podatke koji su vezani za jedan komad namestaja, cak i podatke o proizvodjacu, boji, tezini... Zadatak scene generatora je da odluci sta je od ovih podataka bitno za prikaz scene.
-				Sama scena moze da sadrzi sve sto je opisano u AM ili moze da sadrzi jedan deo.
-				Takodje, moguce je da AM ne sadrzi geometrijske podatke uopste (kao na primer u information visualization). Tu se ubraja neka statistika i pie chartovi
-
-				SLIKA
+				Uzmimo za primer crtez lica od Henrija Matisa. U samo 13 linija ovaj umetnik je preneo dosta informacija o licu - cak i izgled i raspolozenje. Ovaj efekat je postignut zbog uncanny valey, tj ideje iz robotike. Sto robot vise izgleda kao covek to raste osecaj prepoznavanja, ali samo do odrenjene tacke, od koje ce da osecaj opada sve dok robot ne postigne veoma slican izgled coveku.<br>
+				Gledajuci tu sliku, vidimo da je cilj grafike ustvari komunikacija, sto se nekad postize ne realizmom vec drugim metodama (tj isticanjem detalja).<br>
+				Grafika kao i bilo koja druga grana nauke ima ogranicen budzet i ogranicenja. Npr - broj pologona koji moze da se posalje kroz pipeline pre iscrtavanja sledeceg frejma. Sa slicnim problemima se srecu i umetnici, koji su razvili tehnike za isticanje detalja, npr konture, ili ravo bojenje nekih povrsina, i dodavanje kontrasta. Grafika uci iz ovih tehnika, ali na kraju ljudski mozak odlucuje sta je zadovoljavacuje. Jos jedna bitna stavka je koliko vremena covek moze da provede gledajuci i pokusavajuci da razume ono sto je prikazano. <br>
+				Ponekad sama priroda sistema nam dozvoljava da pravimo male pribliznosti stvarnosti, npr iscrtavanje oblaka. Oko nije osetljivo na geometriju oblaka. Npr mozemo da napravimo da mreza ima gradient boju tako sto bi svaki trougao u mrezi obojili jednom bojom (flat shading). Ali, ako ovi trouglovi nisu jako mali, moze doci do Mach banding, opticke iluzije.
 			</p>
 		</div>
 		<div class="one-question">
 			<h1>
-				2.3 (9) Evolucija 2D Grafike
+				7. (1.11) Klasifikacija racunarske grafike u aplikacijama
+			</h1>
+			<p>
+				Neki kriterijumi:<br><br>
+
+				a) Da li se slika na ekranu menja svakog trenutka (kao u modernim igrama) ili retko (kao u word procesorima)?<br>
+				b) Da li se koordinate koje program koristi izrazavanju pomocu pokretnog zareza (kao u igrama) ili pomocu piksel koordinata (kao u prvim programima za crtanje)?<br>
+				c) Obicno postoji model podataka koji treba da se predstavi. Da li je za transformaciju modela zaduzena kamera (kao u modernim igrama) ili nesto drugo (kao npr parce teksta koje se vidi u word procesorima)? U svakom slucaju, potrebno je iseci, tj ne prikazati deo podataka koji je nije vidljiv.<br>
+				d) Da li objekti koji se vide imaju neko ponasanje vezano za njih? Npr dugmici i meniji na GUI-ju, nasuprot likovima iz video igara<br>
+				e) Da li je potrebno prikazati realisticnu sliku objekta, ili abstraknu? Npr dijagram elektricnog kola ne mora da bude realistican.<br>
+				f) Da li floating point koordinate imaju mere (feets, cm...) ili su jednostavno brojevi? Prednost kad imaju mere jeste to da program moze da se prilagodi rezoluciji ekrana.<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				8. (2.2) 2D Graficki pajplajn
+			</h1>
+			<p>
+				Kao sto znamo, graficka platforma predstavlja vezu izmedju same aplikacije i hardvera, i vezu izmedju outputa (intrukcije za GPU) i inputa (user interakcija).<br>
+				Uobicajeno je da se neki podaci, koji se nazivaju application model (AM) budu predstavljeni nekom renderovanom slikom, tako da korisnik moze da manipulise. Sama aplikacija radi zajedno sa window managerom, koji brine o povrsini koja je dodeljena aplikaciji za prikazivanje, i interakciji sa window chrome stvarima (title, minimize, close...). Fokus aplikacije je na client area, koja predstavlja unutrasnjost prozora.<br>
+				Client area se moze podeliti na 2 dela, deo sa UI kontrolama (npr meni) i viewportom, gde se nalazi rendering scene (tu se nalazi render od AM). Za to je zaduzen scene generator modul.<br>
+				Scena u principu predstalvja kolekciju 2D oblika.<br>
+				Uzmimo za primer aplikaciju za dizajn namestaja. AP sadrzi sve podatke koji su vezani za jedan komad namestaja, cak i podatke o proizvodjacu, boji, tezini... Zadatak scene generatora je da odluci sta je od ovih podataka bitno za prikaz scene.<br>
+				Sama scena moze da sadrzi sve sto je opisano u AM ili moze da sadrzi jedan deo.<br>
+				Takodje, moguce je da AM ne sadrzi geometrijske podatke uopste (kao na primer u information visualization). Tu se ubraja neka statistika i pie chartovi
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				9. (2.3) Evolucija 2D Grafike
 			</h1>
 			<p>
 				Kao i programski jezici, i graficke platforme su pretrpele istu evoluciju. Svaka nova generacija nudi veci nivo abstrakcije, prihvatajuci na sebe zadatke koji su bili deo same aplikacije.<br><br>
@@ -159,7 +208,7 @@
 		</div>
 		<div class="one-question">
 			<h1>
-				2.4 (10) Specifikacija 2D scene u WPF - Pitanje
+				10. (2.4) Specifikacija 2D scene u WPF - Pitanje
 			</h1>
 			<p>
 				Napravicemo sat koristeci XAML. XAML je jezik koji koristi tagove kao i XML.Medjutim, postoje elementi koji nisu namenjeni za XAML - kao sto su npr meniji, gridovi za sheetove, dugmici, text inputi...
@@ -226,7 +275,67 @@
 		</div>
 		<div class="one-question">
 			<h1>
-				5.1 (13) Culo vida i implikacije na racunarsku grafiku
+				11. (2.5.1) Implementacija dinamike u 2D grafici koriscenem WPF
+			</h1>
+			<p>
+				Retained mode arhitektura podrzava jednostavnu dinamiku. Postoje dve vrste:<br>
+				a) automatizovana, neinteraktiva gde se animacija izvrsava pomocu xaml<br>
+				b) dinamika vezana za interfejs, gde se callbackovi aktiviraju na neku manipulaciju od strane korisnika<br><br>
+
+				Dinamika pomocu deklarativne animacije<br>
+				WPF pruza mogucnost da se kreira jednostavna animacija koriscenjem animacionih elemenata. Bukvalno svaki XAML element moze biti meta animacije.<br>
+				Na primeru sata koji je kreiran u WPF, vec imamo kreirane skazaljke. 
+				Ovo je isecak bitnog pseudo koda za kreiranje skazaljle
+				podesi skaliranje (da bi se skazaljka razlikovala od skzaljke za minut)
+				podesi ugao rotacije (npr - 180, kao defaultnu poziciju za start)
+				a zatim pravimo jos jednu transformaciju kojoj cemo dati ime (npr animatehour), i podesiti ugao na 0<br>
+
+				zatim, da bi uticali na ovu tranfsormaciju potreban nam je doubleanimation element. u njemu definisemo target za animaciju (animatehour), od kad do kad traje animacija (1 sat), koliko se ponavlja (forever) i koji properti gadja (angle).<br>
+
+				Da bi se ova animacija startovala cim se pokrene aplikacija, potrebno je da napravimo event triger tag, koji se opaljujena load frameworka i u njega stavimo double animation element.<br>
+
+				Inace, cak i kad sama animacija nema pristup CPU resursu, a slika postane neravnomerno animirana, u datom trenutku kada se oslobodi CPU slika ce biti pravilo apdejtovana.<br>
+
+				Dinamika pomocu proceduralnog koda<br>
+				Naravno da postoji limit na mogucnost ove animacije. Proceduralni kod je potreban za drugu logiku, pristup bazi, kao npr racunanje lokalnog vremena, podrska za alarm i sl...
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				12. (3.1) Osnove modela renderovanja na primeru Direrovog rada u drvetu
+			</h1>
+			<p>
+				Da bi predstavili osnove, najpre cemo kao primer objasniti inicijalni direrov rad u drvetu - koji nam pokazuje kako napraviti crtez nekog objekta iz bilo koje perspektive.<br><br>
+
+				Najpre, dugacka zica, koja je povezana na mali "pokazivac", je pricvrscena na zid, i sa druge strane povezana tegom.<br>
+				Postoji pravougaoni okvir, sa tablom koja je povezana sarkama, koji zovemo shutter. Na tabli je papir na kome se crta.<br>
+				Sistem funkcionise tako sto prvi covek drzi pointer na odredjenoj tacki na objektu koji zelimo da nacrtamo. Drugi covek stavi olovku tacno na mesto gde zica prolazi kroz okvir. Kada se to utvrdi, zica se sklanja, okvir se zatvara i markira se mesno gde je drugi covek drzao olovku.
+				Na ovaj nacin ce se objekat nacrtati tacno onako kako bi je covek koji bi recimo stojao gde je sraf koji drzi kanap stajao.<br><br>
+
+				Ovo se moze predstaviti jednostavim algoritmom:<br>
+				Za svaku vidljivu tacku objekta <br>
+				Otvori okvir<br>
+				Stavi pointer na tacku na objektu<br>
+				Ako tacka dodiruje okvir, ne radi nista<br>
+				Ako tacka ne dodiruje okvir, stavi olokvu na tacku preseka<br>
+				Skloni zicu<br>
+				Zatvori okvir<br><br>
+
+				Ovde mozemo primetiti tri stvari.<br>
+				1) iteracija se vrsi preko svih vidljivih tacaka, tako da je odredjivanje vidljivosti bitno<br>
+				2) sta ako ima beskonacno vidljivih tacki<br>
+				3) sta raditi kada zica dodiruje okvir (tj kada deo objekta nije vidljiv)<br>
+
+				Sto se druge stavke tice - ovde se pravi priblizno renderovanje, gde se vrsi odabir konacnog broja tacaka.<br>
+				Treci problem je veoma cest u grafici - usteda vremena na stvarima koje nisu vidljive. To se zove clipping.<br>
+
+				Drugi primer jeste da se pocne sa parcetom graph papira.<br>
+				Za svaki kvadrat na graph paperu se vrsi proces - covek sa olovkom drzi tacno na centru kvadrata, zica prolazi kroz ovu tacku i na drugoj strani dodiruje nesto - objekat, zid, sto... Kada se okvir zatvori, kvadrat se senci u zavisnosti koliko je osvestljena povrsina bila.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				13. (5.1) Culo vida i implikacije na racunarsku grafiku
 			</h1>
 			<p>
 				Culo vida i njegova mogucnost da paralelno procesiraju informacije omogucavaju da velika kolicina informacija bude preneta sa racunara na korisnika. Tako da culo vida (visual system) je veoma tolerantno na lose podatke - sto znaci da ce covek videti smisao u slici gde je samo cica glisa nacrtan. Oko je veoma osetljivo na sitne detalje - npr jedan crveni piksel u 100000 zelenih bi strcao.<br>
@@ -262,7 +371,7 @@
 		</div>
 		<div class="one-question">
 			<h1>
-				5.4 (14) - Opticke varke, postojanost, kontinuitet, senke i kretanje
+				14. (5.4) - Opticke varke, postojanost, kontinuitet, senke i kretanje
 			</h1>
 			<p>
 				Ljudsko oko moze da identifikuje poznate predmete pod razlicitim osvetljenjima. Na primer, automobil ce biti prepoznat i danju i nocu, nebitno da li stojim pored njega ili ispred (ne razmiljsajuci da je promenio boju i oblik). Iako zaista vidimo drugacije stvari, kao sto je boja auta, ne verujemo da je boja promenjena. To je color constancy. Isto tako, ne verujemo da je promenjen oblik ili velicina (shape and size). Iako je korisna - konstantnost ima i svoje mane, kao npr nemogucnost da precizno primetimo iste boje ako nisu jedna pored druge.
@@ -283,71 +392,676 @@
 		</div>
 		<div class="one-question">
 			<h1>
-				6.1.2 (15) Osnovi planiranja scene, mesha, i osvetljenja na primeru piramide
+				15. (6.1.2) Osnovi planiranja scene, mesha, i osvetljenja na primeru piramide
 			</h1>
 			<p>
 				Svaki objekat na 3D sceni karakterise to sto odbija odredjenu kolicinu svetlosti. Svaka tacka prima svetlost iz samog izvora svetlosti, kao i svetlost koja je odbijena od ostalih tacaka. Proracun ovoga zahteva hardver koji cak i danas nije dostupan. Zato se generisanje grafike sluzi tehnikama koje priblizno docaravaju sliku. Jedan od najbitnijih algoritama se zove fixed-function 3D graphic pipeline. Ovaj algoritam renderuje trougnalne mreze. Softveri koji koriste ovaj algoritam su na primer OpenGL i Direct3D. 
-				U ovom primeru cemo generisati piramidu.
+				U ovom primeru cemo generisati piramidu.<br><br>
 
-				Pocinjemo sa generisanjem poda. Pod se nalazi na xz koordinati. Piramida ce se nalaziti tako da se njen centar nalazi na 0 0 0.
+				Pocinjemo sa generisanjem poda. Pod se nalazi na xz koordinati. Piramida ce se nalaziti tako da se njen centar nalazi na 0 0 0.<br><br>
 
-				Zatim definisemo sirinu i duzinu viewporta. Sve sto ima veze globalno sa scenom se nalazi pod tagom Viewport 3d.
+				Zatim definisemo sirinu i duzinu viewporta. Sve sto ima veze globalno sa scenom se nalazi pod tagom Viewport 3d.<br><br>
 
-				Za viewport nam treba:
-				kamera
-				svetlo
+				Za viewport nam treba:<br>
+				kamera<br>
+				svetlo<br><br>
 
-				Kamera ce biti Perspective kamera. Potrebno je podesiti joj poziciju (x, y,z), pravac gledanja, ugao gledanja.
-				Position, LookDirection, FieldOfView.
+				Kamera ce biti Perspective kamera. Potrebno je podesiti joj poziciju (x, y,z), pravac gledanja, ugao gledanja.<br>
+				Position, LookDirection, FieldOfView.<br><br>
 
-				Svetlo ce biti ambijentalno. To je jednostavno svetlo koje osvetljava na sve strane, nezavisno od ugla.
-				AmbientLigt Color = white
+				Svetlo ce biti ambijentalno. To je jednostavno svetlo koje osvetljava na sve strane, nezavisno od ugla.<br><br>
+				AmbientLigt Color = white<br>
 
-				Sledeci korak je generisanje piramide. Za to pravimo resurs koji moze da se koristi na vise mesta. Za to cemo koristiti Mesheve.
-				Za kreiranje resursta, koristimo MeshGeometry3D tag. U njemu definisemo kljuc, koordinate, kao i redosled pod kojim se koordinate iscrtavaju. Ukupno nam je potrebno devet tacaka, za tri trougla.
-				MeshGeometry3D key = "piramida"
-				Position
-				Indices
+				Sledeci korak je generisanje piramide. Za to pravimo resurs koji moze da se koristi na vise mesta. Za to cemo koristiti Mesheve.<br>
+				Za kreiranje resursta, koristimo MeshGeometry3D tag. U njemu definisemo kljuc, koordinate, kao i redosled pod kojim se koordinate iscrtavaju. Ukupno nam je potrebno devet tacaka, za tri trougla.<br>
+				MeshGeometry3D key = "piramida"<br>
+				Position<br>
+				Indices<br><br>
 
-				Zatim je potrebno definisati materijale. Zelimo da piramida bude zuta spolja a crvena iznutra. Za to koristimo tag 
-				Diffuse materijal key = "front" color = "yellow"
-				Diffuse materijal key = "Back" color = "red"
+				Zatim je potrebno definisati materijale. Zelimo da piramida bude zuta spolja a crvena iznutra. Za to koristimo tag <br>
+				Diffuse materijal key = "front" color = "yellow"<br>
+				Diffuse materijal key = "Back" color = "red"<br><br>
 
-				Trouglove smestamo pod kljuc GeometryModel3D. Tu navodimo kljuc, da bi smo pozvali oblik koji smo definisali.
-				GeometryModel3D
-				Geometry: piramida
-				Materijal: front
-				BackMaterijal: back
+				Trouglove smestamo pod kljuc GeometryModel3D. Tu navodimo kljuc, da bi smo pozvali oblik koji smo definisali.<br>
+				GeometryModel3D<br>
+				Geometry: piramida<br>
+				Materijal: front<br>
+				BackMaterijal: back<br><br>
 
-				To je dovoljno za generisanje piramide sa sve tri strane, materijalom i svetlom.
+				To je dovoljno za generisanje piramide sa sve tri strane, materijalom i svetlom.<br><br>
 
-				Medjutim, svetlo nije dovoljno dobro. U stvarnom svetu svetlo nije tako konstanto, zavisi od orijentacije, smera L, refleksije... Zato ambient light menjamo za point light. To znaci da sve sve tacke na sceni primiti svetlo sa jednog izvora.
-				Umesto AmbientLight pisemo
-				DirectionalLight color = white Direction = 1, -1, 1
+				Medjutim, svetlo nije dovoljno dobro. U stvarnom svetu svetlo nije tako konstanto, zavisi od orijentacije, smera L, refleksije... Zato ambient light menjamo za point light. To znaci da sve sve tacke na sceni primiti svetlo sa jednog izvora.<br>
+				Umesto AmbientLight pisemo<br>
+				DirectionalLight color = white Direction = 1, -1, 1<br>
 			</p>
 		</div>
 		<div class="one-question">
 			<h1>
-				6.2.2 (16) Lambertovo kosinusno pravilo
+				16. (6.2.2) Lambertovo kosinusno pravilo
 			</h1>
 			<p>
-				Ovde je bitno Lambertovo kosinusno pravilo.
-				I = Idir cos0
-				To sluzi za izracunavanje inteziteta svetlosti koja se odbija od materijala.
+				Ovde je bitno Lambertovo kosinusno pravilo.<br>
+				I = Idir cos0<br>
+				To sluzi za izracunavanje inteziteta svetlosti koja se odbija od materijala.<br><br>
 
-				Intezitet predstavlja neku vrstu merenja jacine svetlosti, gde sto jaci intezitet to vise svetla. Intezitet nije definisan ni po internacionalnim standardima vec predstavlja meru za kolko svetla dolazi do ove tacke.
-				Slika ugla
-				6.15
+				Intezitet predstavlja neku vrstu merenja jacine svetlosti, gde sto jaci intezitet to vise svetla. Intezitet nije definisan ni po internacionalnim standardima vec predstavlja meru za kolko svetla dolazi do ove tacke.<br>
+				Slika ugla<br>
+				6.15<br><br>
 
-				Problem sa formulom je sto ne moze da simulira sjajne uglacane povrsine (npr koje pod odredjenim uglom imaju istaknuto svetlo na nekoj tacki).
-				Takodje, pravilo racuna da se svo svetlo odbija od materijala. U praksi, nesto svetla ce se upiti.
+				Problem sa formulom je sto ne moze da simulira sjajne uglacane povrsine (npr koje pod odredjenim uglom imaju istaknuto svetlo na nekoj tacki).<br>
+				Takodje, pravilo racuna da se svo svetlo odbija od materijala. U praksi, nesto svetla ce se upiti.<br><br>
 
-				Pravilo ima dve karakteristike:
-				odbijena svetlost je nezavisna od ugla posmatranja
-				zavisi samo od kosinusa ugla izmedju dolazeceg svetla pravca l i normale na tacki u kojoj se odbija (primer sa svetlom na tabli, odakle god gledamo isto je)
+				Pravilo ima dve karakteristike:<br>
+				odbijena svetlost je nezavisna od ugla posmatranja<br>
+				zavisi samo od kosinusa ugla izmedju dolazeceg svetla pravca l i normale na tacki u kojoj se odbija (primer sa svetlom na tabli, odakle god gledamo isto je)<br>
 				U teoriji, lambertovo pravilo treba da se primeni za svaki piksel na povrsini sto nije realno zbog zahtevnosti. Umesto toga se vrsi racun samo za jednu kljucnu odabranu tacku na trouglu, i ostatak trougla se puni tom bojom. To se zove flat (constant) shading
 			</p>
 		</div>
+		<div class="one-question">
+			<h1>
+				17. (6.3.1) Guroovo interpolaciono sencenje
+			</h1>
+			<p>
+				U ranim danima kompjuterske grafike, postojao je zadatak da se pronadje efikasan nacin za iscrtavanje zakrivljenih povrsina od mreze trouglova niske rezolucije. Flat shading je bio koricen, ali postojala je potreba za alternativom. Henri Guro je razvio algoritam koji koristi interpolaciju (procenu) inteziteta vrednosti na svakoj tacki jednog trougla u mrezi.<br>
+				Slika obicnog i Guroovog algoritma (6.23)<br><br>
 
+				U svakoj tacki, lightning model je izracunao boju za tu tacku.<br><br>
+
+				Slika 6.24<br>v
+
+				Prema ovoj slici, za uobicajen model za boju u tacki se koristi normala (vertex normal).<br>
+				Medjutim, za Guroo-a, boja u tacki se izracunava prosekom izmedju dve tacke. Npr za tacku v2, racuna se pomocu v1v2 (crta iznad) i v2v3 (crta iznad)<br>
+				U 3D, vertex normala se uzracunava pomocu svih trouglova koji su pored.<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				18. (6.5.3) Fongov Model odbijanja svetlosti
+			</h1>
+			<p>
+				Fizika koja proracunava kako se svetlost odbija od povrsine je veoma komplesna. Vec decenijama se zato koristi pajplajn koji se zove Fongov model odbijanja svetlosti. U ovom modelu materijal se opisuje pomocu tri komponente refleksije:<br>
+				Ambient (mali ali konstantan izvor svetlosti)<br>
+				Diffuse (svetlost koja se odbija u svim pravcima)<br>
+				Specular (omogucava uglancane povrsine)<br>
+				Sada cemo opisati jednacinu koja iako nije identicna sa Fongovim modelom, cvrsto je zasnovana na njemu. <br>
+				Prvo cemo definisati inpute:<br>
+				Cd - boja diffuse lejera (Cdr, Cdg, Cdb)<br>
+				Cs - boja specular lejera (Css, Csg, Csb)<br>
+				ka - efikasnost ambient lejera u odbijanju ambient svetlosti (kar, kag, kab)<br>
+				kd - efikasnost diffuse lejera u odbijanju directional / geometric svetlosti (kdr,kdg, kdb)<br>
+				ks - efikasnost diffuse lejera u odbijanju directional / geometric svetlosti (ksr, ksg, ksb)<br>
+
+				Za materijale koji imaju jednu boju, boje diffuse i specular lejera su konstante preko cele povrsine. Za materijal sa teksturom, u zavisnosti od same teksture i njenog algoritma se odlucuje boja na svakoj tacki.<br><br>
+
+				Za efikasnost se koriste RBG triple, izmedju 0 i 1. Kada se kaze kar = 0.5 za difuse lejer, to znaci da on odbija tacno pola crvene boje ambient svetlosti.<br><br>
+
+				Zatim, definisemo varijable za svetlo:<br>
+				Ia - boja/intezitet ambient svetla (Iar, Iag, Iab)<br>
+				Idir - boja/intezitet directional svetla<br>
+				Igeom <br>
+				Fatt - faktor slabljena za geometrijska svetla (to je realan broj)<br><br>
+
+				Tako da je svetlo koje stize u neku datu tacku izracunato pomocu:<br>
+				FattIgeomR x FattIgeomG x FattIgeomB<br><br>
+
+				Konacna formula koja proracunava crvenu komponentu koja stize u kameru je:<br>
+				iar kar cdr<br>
+
+				suma dir Idir kdr cdr x cos teta<br>
+				suma geom Fatt Igeom kdr cdr cos teta<br>
+				suma dir Idir ksr csr cos beta<br>
+				suma geom Fatt Igeom ksr csr cos beta<br><br>
+
+				Ponekad moze da se desu da je proracunato iznad 100 posto intezinteta. Neki modeli odseku to sto je preko ali to nije uvek dobro. Glavi problem je odabir efikasnosti koji varira od 0 do 1.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				19. (6.6) Scenski Graf
+			</h1>
+			<p>
+				Kada se razvija neki kompleksan model, praksa je da se geometrija modela podeli na vise manjih subkomponenata. Cilj je da se napravi jedna komponenta koja ce se koristiti za kreiranje instanci. Ukoliko je dizajn modularan, obicna tranfsormacija je dovoljna da se predstavi pokret.<br>
+				Takodje, detekcija dodira je mnogo laksa ako se koriste subkompontente (ako je objekat ceo mesh, gde god da se klikne detektovace se klik).<br>
+				Koristan savet prilikom razvoja animacije je da se posmatra slika kao cela i da se razmotri sta mogu da budu "zglobovi" (npr prilikom animacije hoda coveka).<br>
+				Instance transform - koristi se za pozicioniranje, transformaciju, promenu velicine neke komponente (kao npr skazaljka sata)<br>
+				Joint transform - simulacija pokreta neke celine (npr ruka - rame lakat...)<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				20. (7.5) Koordinate i operacije nad koordinatama
+			</h1>
+			<p>
+				Cartesian plane prikazano na slici predstavlja model Euklidske geometrije. <br>
+				slika polja 7.3<br>
+				Ovde, svaka tacka je predstaljena parom realnih brojeva - koordinata. Ovo nam omogucava da izjavimo: Za tacku P, njene koordinate zadovoljavaju dve linearne jednacine. Odabir koja je linija x a koja y osa, je proizvoljna. Bitna stvar je da geometrija koja je postavljena ne bude promenjena kada se promeni koordinatni sistem, brojevi samo treba da se menjaju. <br><br>
+
+				Kao primer cemo zadati sledeci koorinatni sistem.<br>
+				Ovde mozemo videti da su koordinate M u oba koordinatna sistema u stvari prosek tacaka P i Q.<br>
+				p - 2,5<br>
+				q - 4,1<br>
+				m - 3,3<br>
+				plava pocetna koord - 4, -3<br><br>
+
+				Formula: M = (x1 + x2 / 2, y1 + y2 / 2), koja kad se uprosti izgleda: 
+				1/2(x1, y1) + 1/2(x2, y2)<br><br>
+
+				E sad logicno pitanje je - da li bi smo dobili isti rezultat kada bi smo deli sa dva? Iako zacudujuce, ne bi. Odgovor lezi u tome sto bi podeli sa dva operacija mogla da se napise kao<br>
+				1/2(x,y).<br><br>
+
+				Koeficijenti u prvom slucaaju teze jedinici (1/2 + 1/2) a u drugom ne. To se naziva affine combination
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				30. (22.3) Ermitove i Bezijeove krive
+			</h1>
+			<p>
+				Ermitova
+
+				Recimo da nam je potrebno da animiramo objekat koji ide uz y osu, i zatim skrece. Poznato nam je vreme (t), brzina (v) i pozicija (P, Q).<br><br>
+
+				Potrebno je naci fju koja bi nam omogucila da iscrtamo putanju objekta.<br><br>
+
+				(2t^3 - 3t^2 + 1)P (-2t^3 + 3t^2)Q (t^3 - 2t^2 + t)v (t^3 - t^2)w<br><br>
+
+				Svaki od ovih polinoma se naziva Ermitova funkcija. Kriva koja je rezultat proracuna je Hermitova kriva.<br><br>
+
+				Takodje, mozemo da pojednostavimo funkciju:<br><br>
+
+				[P,Q,v,w] * [1, 0, -3, 2; 0, 0, 3, -2; 0, 1, -2, 1; 0, 0, 1, 1] * T(t).<br><br>
+
+				Prva matrica je geometry matrix, zvani G. Sredja matrica je osnovna matrica M.
+				Konacna formula: GMT(t)<br><br>
+
+				Bezijeova kriva se razlikuje u tome sto su unutar formule sve tacke, sto uproscava stvar za racunanje. <br>
+				1 −3 3 −1<br>
+				0 3 −6 3<br>
+				0 0 3 −3<br>
+				0 0 0 1<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				31. (22.4) Katmul-Romovi splajnovi
+			</h1>
+			<p>
+				Recimo da imamo povrsinu sa definisanim tackama P0, P2, ... Pn, kao i vektorima v0, v2... vn, i zelimo da nadjemo krivu koja prolazi koz zadate tacke i vektore kao pravce. Mozemo da primenimo formulu:<br>
+
+
+				Yt =  Y0(t) = 0 <= t<= 1, Y1(t-1) = 1<= t <=2...<br>
+				Svaka funkcija je segment - sve je kriva, a vektori i tacke su control data. Najcesce imamo samo tacke, tj control point.
+				Konacna forma ce izgledati ovako:<br>
+
+
+				suma (od i = 0 do n) Pi bcr (t-i), gde je bcr catmull romova kriva kao na slici.<br>
+				Jos jedna bitna stvar su uniformne i neuniformne Katmul-Romove krive. 
+				Kad je razmak izmedju cvorova isti kad nije.
+				Recimo da imamo tacke P0... Pn i sekvencu parametara t0 <... tn, ove vrednosti ti predstavljaju cvorove.
+
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				32. (22.5) B-Splajnovi i poddeoba
+			</h1>
+			<p>
+				Postoje razne vrste B-splajnova, ali najzastupljeniji su Cubic (postoje i liner, quadratic, quartic...) i slicne su Catmul Rom splinovima. Razlika je sto ove krive prolaze blizu kontrolnih tacaka a ne kroz njih. <br>
+				Posto je uniformne i neuniformne b krive. Kao i Bezijeove i Ermitove, i B splajnovi se mogu izraziti kroz formulu GMT(t). <br>
+				Iako su veoma popularne, imaju svoja ogranicenja. Npr nije moguce iscrtati pun krug. Zato je resenje dodati jos jednu koordinatu, w, kako bi se dobila rational B-splajn.  Takodje postoje nonuiform i uniform rational splajnovi, gde se ovi drugi (NURB) koriste u mnogim CAD sistemima.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				37 (13.3) Specifikacija perspektivne kamere
+			</h1>
+			<p>
+				WPF kamera koristi sest parametara za specifikaciju:<br>
+				poziciju<br>
+				pravac gledanja<br>
+				pravac koji pokazuje na gore<br>
+				near plane distance<br>
+				far plane distance<br>
+				ugao gledanja (fov)<br><br>
+
+				slika 13.2<br><br>
+
+				na slici mozemo da vidimo da zraci koji ulaze u kameru ulaze u jednu tacku, tj poziciju. <br>
+				u stvarnom svetu, kamerama jos mozemo da podesimo fokalnu udaljenost (odaljenost od tacaka koje su najvise u fokusu), i depth of field (koliko daleko ce od fokalne udaljenosti tacke biti u fokusu).<br>
+				U WPF moguce je navesti visinu i sirinu viewporta, koji predstavlja pravougaonik u kome je slika.<br>
+				Jedina tacka koju je teze definisati je pravac koji pokazuje na gore.
+				Ako zamislimo vertikalni vektor v koji se nalazi na poledjini kamere, vidimo da on zajedno sa pravcem gledanja cini jednu ravan. Uobicajena praksa je da od korisnika trazimo da definise bilo koji vektor u ravni (osim pravca gledanja) pa da osnovu njega definisemo i glavni vektor v. Ako kamera gleda direktno gore - vrednost ovog vektora ce biti nula.<br>
+				Near plane distance predstavlja jako malu udaljenost od objekta, omogucava nam to da se okolni objekti ne nalaze izmedju kamere i objekta.<br>
+				Far plane distance nam omogucava da izostavimo nepotrebne objekte van slike koju zelimo da prikazemo.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				39. (13.5) Transformacije kamere i pajplajn rasterizujuceg renderovanja
+			</h1>
+			<p>
+				Proces koji je uobicajen - imamo geometrijski model koji se formira u 3d sceni pomocu raznih transformacija. Zatim ove modele kamera vidi, i na kraju se projektuju u 2d sliku.<br><br>
+
+				Slike 3.15, 3.16<br><br>
+
+				Tokom ovog procesa, desava se clipping. To znaci da trouglovi koji se ne nalaze u view volume budu odseceni, a trouglovi koji su delimicno u njemu budu pretvoreni u nepravile trapeze, a zatim izdeljeni na vise manjih trouglova. To je ponekad veoma zahtevno, tako da je ponekad lakse samo renderovati piksele delova trouglova koji se nece videti.<br>
+				Cela sekvenca:<br>
+				Imamo ugaone tacke trouglova<br>
+				1. Mnozimo ih sa Mpp (gde je matrica koja sadrzi transformaciju iz perspective u paralel) Mper (Matrica koja sadrzi transformaciju u standard perspective view volume)<br>
+				2. Clipujemo sve tacke koje imaju z < 0 (da se objekti iza kamere ne bi pojavili ispred)<br>
+				3. Primenimo homogenizujucu transformaciju (x,y,z,w) -> (x/w, y/w, z/w, 1)<br>
+				4. Radimo cliping x= +- 1, y= +-1, z= -1<br>
+				5. Mnozimo sa Mwind da bi transformisali tacke u piksel kooridnate<br><br>
+
+				Faktor koji je izostavljen je sencenje i svetlost. Danas je su za to zaduzeni mali programi zvani shaderi. Sencenje je zahtevan proces koji je najbolje odloziti sve do trenutka dok ne budemo sigurni da ce uticati na sliku. Cliping je najbolji trenutak za to, jer necemo senciti objekte koji nisu vidljivi. 
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				40. (15.1) Tehnika livenja zrakom
+			</h1>
+			<p>
+				Da bi smo predstavili neku sliku, potrebno je da izracunako koliko svetla stize u svaki piksel unutar senzora u virtualnoj kameri. Fotoni prenose svetlo, ali nije moguce simulirati sve fotone. Umesto toga potrebno je uzeti uzorak od nekoliko i napraviti generalizaciju.
+				Posto je dve strategije za ovo, ray casting (livenje zrakom) i rasterizacija.<br><br>
+
+				Svetlost koja ulazi u kameru je ili emitovana od neke tacke na povrsini ili se odbila od nje. Ove tacke se nalaze na zracima koje smo odabrali za semplove.<br>
+				Za primer mozemo uzeti sledecu sliku:<br>
+				Slika 15.1 - trougao sa tackom P, nacrtano oko (kamera), izvor svetlosti sa leve strane, glavni zrak koji ulazi u P (n) i odbija se u kameru (w0) i ostali zraci koji se odbijaju random<br>
+				Svetlo koje dolazi u tacku P dolazi iz pracva najsvetlijeg objekta. Sto ne mora da znaci da je svo stelo u P odavde - mozda postoje drugi izvori svetlosti koji su tamniji ili su stigli iz drugih tacaka. Sto znaci da moramo da najpre nadjemo sve moguce pravce preko kojih svetlo stize u P, a zatim odabaremo konacan broj pravaca za sempliranje.<br>
+				Za to mozemo da napisemo ovakav pseudokod<br>
+				za svaku vidljivu tacku P sa pravcem w0<br>
+				za svaki pravac w1 svetla koji ulazi u P<br>
+				ukupna suma je svetlo koje se odbija u P od w1 do w0<br><br>
+
+				Sada nam je potrebna stragetija da prikazemo tacke na sceni.<br> Pretpostavka je da je potrebno modelovati samo povrsine koje cine granice objekata. Tehnicki, povrsina je interfejs izmedju samih objekata. Ove povrsine se modeluju kao mreze trouglova.<br>
+				Ova povrsinska mreza predstavlja sve potencijalno vidljive tacke. Da bi se jedan piksel renderovao, moramo da odredimo koje potencijalno vidljive tacke se projektuju u centar piksela, a zatim da nadjemo takcu najblizu kameri (to ce biti vidljiva tacka).<br><br>
+
+				Zato cemo prvobitni algoritam izmeniti. Umesto da prolazimo za svaku vidljivu tacku, prepravicemo petlje:<br>
+				Za svaku poziciju piksela<br>
+				R je zrak koji prolazi kroz poziciju u petlji (od oka)<br>
+				Za svaki trougao T<br>
+				P je tacka preseka R i T<br>
+				ukupna suma je svetlo koje se odbija u P od w1 do w0<br>
+				Ovaj algoritam je generalno poznat kao ray casting.<br><br>
+
+				Drugi algoritam (rasterizacija) je malo komplikovaniji.<br>
+				Za svaku poziciju piksela<br>
+				setuj najblizu tacku na beskonacno. Ovaj niz se zove depth buffer.<br><br>
+
+				za svaki trougao<br>
+				za svaku poziciju piksela<br>
+				R je zrak koji prolazi kroz poziciju u petlji (od oka)<br>
+				P je tacka preseka R i T<br>
+				ukupna suma je svetlo koje se odbija u P od w1 do w0<br>
+				i jos je potrebno izvrsiti proveru ako je tacka bliza od trenutno najblize distance za ovaj piksel, setuj je u depth buffer<br><br>
+
+				Pomocu rasterizacije mozemo procesirati svaki trougao nezavisno. To je prednost jer je mogu ce renderovati vece scene nego sto bi inace memorija dozvolila.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				43 (38.1) Podsticaji razvoju grafickog hardvera
+			</h1>
+			<p>
+				Danasnji personalni racunari podrazumevaju postojanje specijalizovanog hardvera koji ubrzava 2d i 3d renderovanje. U principu, ovaj deo hardvera nije neophodan (osim porta za monitor), posto i obican CPU moze to da odradi. Postoje cetiri stavke koje su dovele do razvoja GPU:<br>
+				1) Razlika u performansama<br>
+				Hardver koji je specijalizovan moze da izvrsava algoritme mnogo brze od obicnog CPU. Pre svega zbog mogucnosti da paralelno izvrsava procesiranje. <br>
+				2) Visoka iskoriscenost u radu<br>
+				Posao koji GPU obavlja je velik. Danasnje igre zahtevaju obradu od miliona trouglova 60 puta u sekundi. Ovo je nesto sto obican CPU (cak i vise komada) ne mogu da izvrse.<br>
+				3) Velika potraznja<br>
+				Pre nego sto su zahtevne igre postale popularne, nije bilo toliko potraznje za GPU. Tek nakon 90-tih potraznja raste<br>
+				4) Sveprisutnost<br>
+				Ovo je faktor koji je za preduslov imao veliku potraznju. Ali takodje je zahtevalo da GPU budu medjusobno zamenljivi.<br>
+				Danas postoje dva interfejsa - DirectX i OpenGL i koristeci njih korisnik moze da razvija kod vise razlicitih GPU i da ocekuje isti rezultat (zato su zamenljivi).<br>
+
+				Paralelizam kod danasnjih GPU se vise ne postize podizanjem frekvencije procesora vec dodavanjem novih jezgara.<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				44 (38.2) Graficka procesorska jedinica Nvidia 9800 GTX
+			</h1>
+			<p>
+
+                                       CPU<br>
+				 Memorija GPU - GPU - Controller - Memorija RAM<br><br>
+
+				 CPU ove graficke kartice je jedna komponenta - silikonski cip, koji je povezan na plocu pomocu stotine zelemljenih kola. CPU, memorija su montirane na maticnu plocu, dok je GPU montiran na plocu pomocu posebnog PCI slota. <br>
+				Ono sto je ovu GPU cinilo posebnim jeste visoke performanse koje je pruzala. Mogla je da renreduje 340 miilona trouglova po sekundi, i 11 miliona piksela po sekundi. Takodje je mogla da obavi 576 miliona GFLOPS operacija u sekundi (floating point operations per second).
+				Inace, poznat je bio Murov zakon, koji kaze da ce broj tranzistora na jednom kolu rasti eksponencijalno. <br>
+				Porast broja tranzistora je omogucio i vecu kompleksnost. Npr paralelizam, i kesiranje. Najveci razlog za porast broja jeste sto su tranzistori sve manji i manji. <br>
+				Takodje problem na koji su naisli tokom evolucije je potrosnja struje. Danasnji moderni procesori imaju potrosnju od oko 100w, sto je maksimum sto jedna komponenta moze da trosi. To je uslovilo da dizajneri iskoriste paralelizam, sto je posebno dobro ispalo na GPU. 
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				45 (38.3) Arhitektura i implementacija graficke kartice
+			</h1>
+			<p>
+				Kada se pise kod koji koristi GPU, nije moguca direktna manipulacija sa kolima na GPU. Umesto toga, kod se implementira pomocu GPU hardvera, firmvera (softvera na GPU), i drajvera (kod koji se pokrece na CPU). Firmver i drajver su kreirani od strane prozvidjaca GPU. <br>
+				Npr, IBM System/360 je predstavljao familiju kompjutera, sa razlicitim performansama, ali sa samo jednom vrstom interfejsa dostupnom programerima. To je znacilo da kod koji se pokrece na jednom moze da bude pokrenut na bilo kom racunaru iz iste familije. Tvorci IBM System/360 su definisali arhitekturu kao "funkcionalnu upotrebljivost i konceptualnu strukturu - vidjenu sa strane nekog ko programira u masinskom jeziku".<br>
+				Slicna analogija se primenjuje za OpenGL i Directx. Konfiguracija samog racunara nije bitna (CPU, memorija...), ali je zato semantika inputa veoma bitna. DirectX i OpenGL ustvari predstavljau biblioteku api poziva.<br>
+				Slika 38.3 - uproscen model pajplana koji odgovara za obe arhitekture<br>
+				Vertex generation, processing<br>
+				Primitive generation, processing<br>
+				Fragment generation, processing<br>
+				Pixel operations<br><br>
+
+				Prva tri su application programable.<br><br>
+
+				Danasnji GPU podrzavaju 2 vrste komandi: one koje definisu stanje (vecina) i one koje prouzrokuju renderovanje. Dakle proces bi isao ovako:
+				1) setapuj stanje<br>
+				2) pokreni pajplajn koji ce da iscrta<br><br>
+
+				Neke stvari imaju veliki uticaj na GPU-ove. Jedan od takvih je read only access memorije, posto pisanje u memoriju tokom iscravanja utice na coherence, tj zahtev da memorija izgleda isto u svakom trenutku svakom procesoru. Jos je bitnija stavka in-order, koja kaze da trouglovi moraju biti iscrtani po redu po kom su definisani.<br>
+				Primer na 9800gtx implementaciji
+				Slika 38.4
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				46 (38.4) Graficke procesorske jedinice i paralelizam
+			</h1>
+			<p>
+				Nekoliko decenija eksponencijalnog porasta broja tranzistora su omogucile paralelizam, tj simultano izvrsavanje operacija.<br>
+				Postoje dve vrste paralelizma<br>
+				1) true - gde postoje odvojene fizicke jedinice<br>
+				2) virtual - gde postoji samo jedna ali se brzo prebacuje sa zadatka na zadatak ostavljajuci utisak paralelizma<br><br>
+
+				Na primeru CRAY superkompjutera (koji je predstavljao najbrzi skalarni procesor na svetu), mozemo da vidimo virtual paralelizam. Iako je tehnicki bilo moguce napraviti true, koristeci 64 operacija odjednom, nije bilo prakticno zbog gustine samih kola.
+				Zato je umesto scalar procesora nastalo pipelining. Tu su postojala dva pristupa problemu, prvo, posto je floating point operacija bila previse kompleksna za jedno kolo, proracuni su bili podeljeni u vise faza: mnozenje, deljenje... Tako da je jedan proracun bio kombinacija pajplajnova. Druga je bila chaining, gde je omoguceno da rezultat jednog vektora bude odmah iskoriscen kao instrukcija za drugi vektor. 
+				Jos jedna podela paralelizma je na task i data paralelizme. Data paralelizam je slucaj gde se sve ista operacija primenjuje na podatke sa istom strukturom. Task paralelizam je primenjivanje jedne ili vise operacije na setovima podataka.
+				Jos jedna bitna stvar za napomenuti jeste predication. GPU model izvrsava isti program za svaki element (tacku), ali te tacke mogu da sadrze svoje grane. Tu na scenu stupa predication, koji ce da podeli vector data u dve grupe, one koji ce ici jednom putanjom i drugi koji ce ici drugom. Obe putanje se izvrse, i na kraju se jedna odbacuje.
+
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				47 (38.5) Programabilnost graficke procesorske jedinice
+			</h1>
+			<p>
+				Zapocecemo objasnjavanje predstavljanjem koda za procesiranje fragmenata. To su operacije koje se izvrsavaju nad svakim piksel fragmentom (podaci koji su generisani rasterizacijom). Racun je jednostavan - rgb i alpha komponetne fragmenta se racunaju pomocu floating point varijable - brigthness. Deo ovog koda se cesto naziva i shader.<br><br>
+
+				float brightness = 0.5;<br>
+				struct v2f {<br>
+					float4 Position : POSITION;<br>
+					float4 Color : COLOR0;<br>
+				};<br>
+				struct f2p {<br>
+					float Depth : DEPTH0;<br>
+					float4 Color : COLOR0;<br>
+				}<br>
+				// attenuate fragment brightness<br>
+				void main(in v2f Input, out f2p Output) {<br>
+					Output.Depth = Input.Position.z;<br>
+					Output.Color = brightness * Input.Color;<br>
+				}<br><br>
+				Primetimo dve bitne stavke - vector data types (npr float4, gde float4 moze da se koristi za vektore duzine 2,3,4 kao i za matrice 4x4) i semantics (DEPTH0, COLOR0), koje predstavljanu neku vrstu konstanta.
+				Da bi se slika pojednostavila, uzmimo primer:<br>
+				voda koja tece kroz cev (kao sto pikseli idu kroz pipeline). Svaki deo vode kad dodje do grejaca se zagreje, kao sto ovaj algoritam vrsi proracun. Na kraju, voda izadje zagrejana iz cevi (tj pikseli izadju obradjeni). Tako da analogno tome, ovo se zove stream processing. Inace samo pisanje shadera je jednostavno - cak i pocetnici mogu da napisu efikasne shadere jer sama implementacija se brine o tome kako organizovati samo procesiranje.<br>
+				Inace, sva funkcionalnost OpenGL-a i DirectX-a je programirana od njihovih sopstvenih programera. Application programeri nisu imali mogucnost da menjaju taj kod. Bili su ograniceni na specifikaciju nacina kako ce se operacije na GPU izvrsavati u okviru ogranicenja na hardveru. <br>
+				Ovo su neki od bitnijih razloga naglog rasta performansi GPU-a.<br>
+				1) Potreba<br>
+				Razvoj GPU performansi je stvorio potrebu za programabilnost koja je specificirana od strane aplikacije<br>
+				2) Kompatibilnost GPU hardvera<br>
+				Nekadasnji GPU su se sastojali od vise komponenti, od razlicitih proizdvodjaca. Povecan broj tranzistora je omogucio da se GPU sastoji od jedne stampane ploce<br>
+				3) Kompatibilnost CPU hardvera<br>
+				Porast performansi CPU je omogucio GPU drajverima da izvrsavaju konverziju iz high level jezika u hardver mikrokod.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				48 (38.6) Memorija graficke procesorske jedinice
+			</h1>
+			<p>
+				Texture Mapping<br>
+				texture mapping ce uzeti  podatke i slici i mapiratu je u primitivu. Dva koraka postoje za ovo:<br>
+				1) Correspondence<br>
+				Predstavlja mapiranje geometrijskih koordinata primitive u koordinate na prostoru same slike. U modernim sistemima, veza se ostvaruje tako sto se dodeljuju koordinate ugaonim tackama primitiva. Za ovo moze biti zaduzena ili sama aplikacija ili odgovarajuci shader.<br>
+				2) Evaluation<br>
+				Za razliku od correspondence, evaluacija ima pristup mnogo vise piksela na jednoj teksturi. Ovi pikseli se nazivaju texels. Posto danasnje teksture mogu biti veoma velike, za ovo je potrebno i velika memorija.
+				Sam proces interpolacije se moze podeliti na tri koraka:<br>
+				a1) Racunanje adrese<br>
+				Na osnovu koordinata, adresa u memoriji texela se izracunava<br>
+				a2) Pristup memoriji<br>
+				Texeli se uzimaju iz memorije<br>
+				a3) Procena tezine<br>
+				Na osnovu koordinata, tezina se racuna i dodeljuje svakom tekselu, zatim se tezine sabiraju<br><br>
+
+				Interpolacija pravi dobre uzorke slika, ali za kvalitene slike potrebno je imati dovoljan broj uzoraka. Nedovoljan broj uzoraka ce prozrokovati npr flicker slike.<br>
+				Danasnji moderni sistemi imaju nacin da sprece ovaj problem - framebuffer, gde je boja svakog piksela predstavljana shaderom koji prima jedan uzorak slike. Do mogucih problema dolazi ukoliko dva piksela u framebufferu nisu razdvojeni samo jednim texelom (undersampling).<br>
+				Ovaj problem danasnji GPU resavaju tako sto proces dele na dva dela:  pre-render faza koja se izvrsava jednom, i dodatna render semantika koja detektuje undersampling. Ovo se zove MIP mapping.<br>
+
+				Memory Basics<br>
+				Najpre malo teorije o memoriji. Memoriju predstavljaju bitovi - gde svaki bit moze biti true ili false. U idealnom svetu, svaki bit bi se nalazio direktno pored kola koji zavisi od stanja bita. Medjutim, u praksi to nije tako. Razmak izmedju bita i kola povecava vreme proracuna, i smanjuje protok - brzina kojim su biti propagirani. Uz to, biti su sa kolima povezani pomocu "zica", gde svaka zica predstavlja vezu izmedju vise bitova i kola. Manje zica - manji bandwith i duze cekanje da upisemo ili uzmemo vrednost iz bita (adresiranje). Samo adresiranje je implementirano na onom kraju zice koji je povezan sa bitom. Ovde dolazi do dva zastoja - prvo je adresa samog bita koji putuje kroz zicu a drugo je cekanje rezultata. To, plus cekanje samog kola da izvrsi upit predstavlja latenciju.<br>
+
+				U praksi, na primeru DRAM (dynamic random access memory). DRAM je organizovan u 2d niz jednobitnih memorijiskih celija. DRAM celije ne mogu da se citaju ili da se u njih upisuje posebno. Umesto toga, operacije se izvrsavaju nad blokovima celija. Kada je potrebno pisati ili menjati bit, ceo blok se ucitava u bufer na kraj niza. Zatim zahtevani bit se uzima iz bufera i dostavlja kolu. Npr 9800GTX koristi 4 ovakva buffera.<br>
+
+				Latencija<br>
+				Postoje tri pristupa za problem latencije<br>
+				1) prihati je<br>
+				2) preduzmi dodatne korake da se smanji latencija<br>
+				3) dok se memorija ceka, sistem da radi ne sto drugo<br><br>
+
+				Npr sto se dodatnih koraka tice, moze se iskoristiti kesiranje. To predstavlja podatke o udaljenim bitovima koji povecavaju latenciju u brzoj memoriji<br>
+				Sto se trece opcije tice, moze se iskoristiti mutithreading.<br>
+				Princip je sledeci - jedan thread (niz) se nalazi u registrima samog procesora, dok ostali threadovi koji cekaju se nalaze u thread store. Procesor odlucuje kada se koji thread izvrsava. Jedan thread zauzima oko 2000 bajtova u DRAM-u. Npr 9800gtx cuva maksimum od 48 threadova po jednom jezgru.<br>
+				Posto je thread store skupocen resurs, koji ima veliki uticaj na performanse (ako je thread store prazan procesor ne radi nista). Postoje dva resenja za optimizaciju:<br>
+				1) Thread size<br>
+				Velicina jednog threada je bitna jer thread store koji sadzri vise malih threadova smanjuje sansu da queue ostane prazan i da procesor ceka.<br>
+				2) Takodje moguce je optimizovati tako sto ce se threadovi izvrsavati duze, tako da u queue ostane vise threadova.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				49 (38.8) Alternative u organizaciji graficke procesorske jedinice
+			</h1>
+			<p>
+				Sama arhitektura GPU-a je specificirana na visokim nivoima OpenGL-a i Dirext3D, sto ostavlja dosta mesta za inovacije. Ali limit postoji, tako da su razvijene 3 tehnike koje testiraju i idu preko ovog limita.<br><br>
+
+				1) Deferred Shading<br>
+				Cilj ove tehnike jeste da se sence samo vidljive kompontente, kako bi se smanjila zahtevnost sencenja. Posto se vidljivost odredjuje u framebufferu, sencenje se odlaze do ovog trenutka, tako da render postaje dva koraka: renderuj celu scenu do frame buffera, a zatim izracunaj sencenje za svaki pixel u bufferu.<br>
+				Postoje tri problema sa kojima se ova tehnika srece:<br>
+				1a) Visak prostora i bandwidtha<br>
+				Snabdevanje svakog piskela informacijama o sencenju zahteva dosta prostora i bandwidtha. Zato se koristi indeksiranje, gde se teksture ili celi sejderi specifiraju po referenci.<br>
+				1b) Nekompatibilnost sa MSAA<br>
+				MSAA je danas prihvacen pristup za problem iskrzanih ivica. Svaki piksel sadrzi informacije o boji i sl. Npr, MSAA sa 4 uzorka boje za svaki piksel povecava storage zahteve za 4 puta. U kombinaciji sa defered shadingom, to dodatno opterecuje framebuffer.<br>
+				1c) Ne postoji vidljivost specificirana sa strane sejdera
+				Jednosavno, nije kompatibilno sa defered shadingom jer je njegov cilj odredjivanje vidljivosti pre bojenja<br><br>
+
+				2) Binned rendering<br>
+				U sustini, binned rendering deli ceo proces na dve faze. U prvoj, kao output se dobijaju tile fragment, koji odgovaraju 8x8, 16x16... gridu. Ovi tile fragmenti se cuvaju u "kutijama". Druga faza pretvara tile fragmente u pixel fragmente.<br>
+				Binned rendering ima nekoliko bitnih stavki:<br>
+				2a) Lokalna memorija<br>
+				Ovo omogucava da se pikseli procesiraju u lokalnoj memoriji umesto da se za to koristi cache glavne memorije. Ovo cuva energiju i cini ga zanimljivim za mobile uredjaje<br>
+				2b)Anti-aliasing cele scene<br>
+				Posto multisample anti-aliasing zahteva veci memorijski prostor za uzorke boja, kada se renderuju na mali tile piksela, nisu tako zahtevni. Sa pametno iskorisceno lokalnom memorijom, cak i zahtevni algoritmi mogu biti podrzani<br>
+				2c) Odlozeno sencenje<br>
+				Ogranicavanje na render malog broja piksela - otkriva i glavne mane odlzoenog sencenja - zahtev za velikim memory storage i protokom, i nekompatibilnost sa MSAA<br>
+				Iako binned rendering ima svoje prednosti, danasnji GPU koji se nalaze u racunarima ga ne implementiraju - zato sto se binned renreding razlikuje od arhitekture pajplanova u Direct3D i OpenGl.
+				Neki od problema:<br>
+				2a) Prekomerna latencija<br>
+				2b) Slabe performanse multipass operacije<br>
+				Direct3D i OpenGL podrzavaju napredne tehnike multipass operacija, dok bi u binned renderingu to moralo da se izvrsi kao vise two pass operacija.<br>
+				2c) Potencijalno neogranicena memorijska zahtevnost<br>
+				Memorija koja se zahteva od svake "kutije" (bins) raste za kompleksnoscu scene<br><br>
+
+				3) Larrabee: CPU/GPU hibrid<br>
+				Ovo je bio pokusaj da se na jednom mestu spoje tehnologije za CPU i GPU. Ova ideja nikad nije zaista zazivela.<br>
+				Poredeci Larrabee i 9800GTX, mozemo videti sledece slicnosti<br>
+				3a) Veliki broj jezgara<br>
+				3b) Siroki vektori<br>
+				Ovo omogucava da se podaci skupe u vektore, i zatim da se vrate nazad u memoriju.<br>
+				3c) Evaluacija texture<br><br>
+
+				A ovo je lista razlika izmedju 9800GTX i Larrabee<br>
+				3a) Specijalizovan hardver za fixed funkcije nedostaje Larrabee (generacija fragmenata, primitivi, piksel operacije...)<br>
+				3b) Sakrivanje latencije<br>
+				Larrabee se oslanjala na kes memoriju da bi prikrila latenciju<br>
+				3c) Povezanost kesa<br>
+				Pvezanost razlicitih nivoa kesa je jako slicna kao na nekim procesorima, iako to nekad dolazi sa vecom cenom jer Larrabee ima mnogo vise kesa na svakom nivou<br><br>
+
+				A ovo je lista stvari koje su slicne izmedju procesora i Larrabe<br>
+				3a) ISA<br>
+				Iako 9800GTX ima jezgra koja su programabilna, njen ISA je sakriven ispod Direct3D i OpenGL, dok i Larrabe i procesori mogu biti programirani da podrze Direct3D i OpenGL<br>
+				3b) SPMD<br>
+				Single programm multiple data. Jezgra Larrabee su dostupna pomocu ISA kao skalari sa vektorskim instrukcijama. Programeri koriste ove kombinacije da kontrolisu top podataka. Ovo je sve skriveno na 9800GTX ispod njenog SPMD<br><br>
+
+				Svi ovi featursi koji Larabee cine slicnim sa CPU, daju prednosti u smislu fleksibilnosti, mogucnoscu izvrsavanja algoritama koji nisu vezani za grafiku, kao i pokretanja programa sistemskog nivoa.
+				Medjutim, sve to je imalo svoju cenu. Larabe je bila dosta teza za programiranje, a Direct3D i OpenGl su imalo dosta slabije performanse. Osnovni razlog je taj sto Larabe nije imao specijalizovan hardver.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				50. (38.9) Upotreba grafickih jedinica za negraficke zadatke
+			</h1>
+			<p>
+				Danasnje graficke kartice imaju mogucnost da paralelno procesiraju veliki broj podataka. Posto su kranje performanse GPU mnogo vise od standardnog CPU, programeri su pokusavali da portuju negraficke alrogirme da rade na GPU.<br>
+				Npr algoritmi koji zahtevaju paralelizam su portovani na GPU tako sto su koristili njihove kernele kao sejdere. Da bi se shader izvrsio, podaci su ucitani kao 2D tekstura i 2D pravouganik se renderovao, tako da se rezultati skladise u framebufferu.<br>
+				Neki od tehnologija koje koriste ove mogucnosti su recimo OpenCL, Nvidia CUDA... Ove arhitekture odrzavaju SMPD mode. Dodate su mogucnosti kao sto su execution commands (nije vise neophodno rasterizovati trougao da se izvrsi kernel implementiran pomocu sejdera), i lokalna memorija.<br>
+				Iako danasnji najbrzi kompjuteri koriste GPGPU kao jedinice za proracun, GPU nikad ne moze u potpunosti da zameni CPU. Veca je verovatnoca da se se napraviti hibrid (kao sto je pokusano sa Larrabee).
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				55. (21.2.1) Smernice za razvoj grafickog korisnikog interfejsa
+			</h1>
+			<p>
+				Za svaki dizajn, ono sto je jako bitno je interakcija sa korisnikom. Npr klik na dugme - dugme ce promeniti boju. U danasnje vreme odgovor od strane GUI-ja sve sto je ispod 0.2 sekunde sporo i smanjuje upotrebnu vrednost.<br>
+				Sto je sistem koji predstavljamo GUI-jem blizi stvarnosti to je tolerancija na lag sve manja (npr kod Kinecta treba da ne postoji jer korisnik sve radi rukama).<br>
+				Za dobar GUI je jako bitno da koristi affordances - vizualne tragove koji nagovestavaju kako sistem radi. Najprostiji primer je cekic sa drskom. Takodje, kada vidimo dugme na interfejsu znamo da je to dugme i sta radi jer smo se sreli sa dugmicima ranije.<br>
+				Ali affordances nisu uvek zahtevane - npr mi znamo da CTRL C radi kopiranje iako to nigde nije nagovesteno.<br>
+				Za dobar dizajn potrebno je koristi Fitsov zakon, koji proracunava vreme koje protekne da se izvrsi pokret do zeljene tacke.
+				T = a + blog(1 + D/W), gde a predstavlja minimalno vreme za izvrsavanje bilo kog taska.<br>
+				Velike mete su lakse da se pogode od manjih<br>
+				Blize mete su lakse da se pogode od daljih ako su iste velicine<br>
+				Ovde vazi opste dokazano pravilo o tackama koje je najlakse dostici.<br>
+				Npr, tacka odmah ispod kursora je najlaksa za dostici.<br>
+				Sledece su tacke koje se nalaze u uglovima, pod uslovom da kursor nikada ne izlazi van ekraja<br>
+				A posle toga tacka koje se nalaze na sredinama ivica ekrana
+				Ovo je logicno dovelo do toga da meniji i bitne komande na vrhu ekrana kako bi interakcija bila laksa.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				56. (21.2.2) Obrada dogadjaja u interakciji
+			</h1>
+			<p>
+				U objektno orijentisanim sistemima, objekti kao sto su dugmad mogu da odgovaraju na poruke koje su im poslate umesto da imaju metode koje se aktiviraju na klik. Kao odgovor, dobice informaciju gde da posalju i koju poruku da posalju.<br>
+				U neobjektno orijentisanim sistemima, pokazivac na fukciju se prosledjuje. Kada se dugme klikne, funkcija se poziva.<br>
+				Ali na low levelu, sustina je ista - cinjenica da je dugme kliknuto mora biti ishedlano kako treba. U prvom slucaju, klik na dugme generise interupt, a u drugom event se smesta u queue.<br>
+				Na primeru drag and dropa mozemo da vidimo 4 stanja:<br>
+				a) pre interaction<br>
+				b) selected state<br>
+				c) draging state<br>
+				d) post drag state
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				57 (21.3) Interakcija multitac intefrejsom u 2D manipulaciji
+			</h1>
+			<p>
+				Kao primer mozemo da postavimo program koji sluzi za manipulaciju slikama a koristi dodir.<br>
+				Slika pomeraja<br>
+				Slika scalea (21.5)<br><br>
+
+				Na prvoj slici, tacka dodia na sliku ostaje ista i nakon prevlacenja
+				Na drugoj slici, pomeramo se horizontalno mnogo vise nego vertikalno. Tu dolazi kao problem skaliranje - kako ce se slika scaleovati?
+				Posto je na touch uredjajima tesko kontrolisati pokrete tako da se krecu uniformno, zadatak aplikacije je da to radi mesto nas.
+				Neka otvorena pitanja postoje - sta bi se desilo ako su tacke kontakta gore desno i dole levo? Da li bi se slika translirala?<br>
+				Da bi napravili program koji radi ove operacije - mozemo da krenemo od pretpostavke da ce vise slika postojati najednom canvasu koji je pozadina. Na kanvasu su vidljive slike koje nakon transformacije se pojavljuju na povrsini x<=0, y<=1.<br>
+				Sama manipulacija se odvija putem callbackova. Kada se desi da se izvrse dva kontakta na ekranu odjednom, svaki kontakt pojedinacno salje callback koji identifikuje koji kontakt se desio. Kad se program pokrene, registrovace se u sistemu za osluskivanje callbackova. Kada sam drag and drop zapocne, aplikacija kreira Interactor objekat koji ce da hendla ostatak pomeranja.<br>
+				Sam interactor mora da radi sledece:<br>
+				a) Da otkrije koja slika se pomera (ako nema slike onda je pozadina u pitanju)<br>
+				b) Zapamti inicijalnu tacku dodira<br>
+				c) Zapamti inicijalnu transformaciju T0<br>
+				d) Da sacuva referencu na tu transformaciju u scene graphu
+				slika 21.7<br><br>
+
+				Aplikacija
+				buttonPress - kreiraj interaktor<br>
+				               mouseMove<br>
+				Mouse eventovi mouseMove<br>
+				               mouseMove<br>
+				Mouse eventovi se vracaju aplikaciji - button release<br><br>
+
+				Na prostom primeru translacije koji ne zahteva scale (znaci drag and move), mozemo primetiti sledece korake:<br>
+				a) Prilikom svakog pomeraja, izracunaj ofset d izmedju trenutne tacke kontakta i pocetne<br>
+				b) Neka je T transformacija po d<br>
+				c) Zameni trenutnu transformaciju sa T * T0 (prvo izvrsi transformaciju koja je bila, pa transliraj po T)<br><br>
+
+				Kako bi smo kodirali ovo u programskom jeziku C, potrebno je definisati<br>
+				Application<br>
+				main<br>
+				callback za inicijalni contact<br>
+				Interactor<br>
+				koji definise sopstveni konstruktor<br>
+				callback za drag<br>
+				callback za release<br><br>
+
+				Sad je javlja problem, sta kada se desi drugi kontakt? Jednostavno cemo ponistiti inicalni contact, i zapoceti novi, sa trenutnom transformacijom i lokacijom. Za ovu interakciju se koristi midpoint, tako da kada se midpoint krece, krece se i cela slika. Kada se razmak siri, fotografija se povecava.<br>
+				Kako bi smo ovo ishendlali, potrebno je dodati nove metode u Interactor
+				add contact - za trenutak dodavanja tacke novog kontakta
+				initialize interaction (gde inicijalizujemo midpoint)<br>
+				remove contact<br>
+				contact moved - za hendlanje transformacije same slike<br>
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				66. (33.3) Istorijski razvoj sejdera
+			</h1>
+			<p>
+				U svojim ranim verzijama, paketi tipa GL su mogucnost da se pomcu sekvenci instrukcija pruze informacije o objektu koji se iscrtava. Recimo da je objekat modelovan pomocu transformacije - GL bi pomocu pusha i popa primenjivao transformacije na sve tacke kojima je to potrebno. Uprosceno, rendering je obuhvatao proces gde bi kolekcija tacki i ugaonih tacki trougla bila predstavljena sistemu, cesto uz razne transformacije. Trouglovi koji proizilaze iz ovoga bi bili transformisani u standard perspective view, a zatim viskovi koji se ne vide bi bili iseceni (clipping). Iz toga bi se transformisali u standard paralel view, i ponovo iseceni. Trouglovi koji bi ostali bi bili rasterizovani, njihovi pikseli obojeni.<br>
+				Kako se grafika razvijala, tako su i ovi koraci varirali. Ono sto je ostala konstanta to je proracun vektora, clipping i rasterizacija. Tako da je i razvoj GPU odrazavao ovo. Danasnji GPU sadrze male programe koji se primenjuju na geometrijske podatke (vector shaders), kojima sledi rasterizacija i kliping, kao i programe koji rade na fragmentima koje rasterizacija pravi (pixel shader, ili fragment shader). Programer pise sejdere u svom jeziku, i zatim kaze GPU kojim redom a ih koristi i kako da ih poveze.<br>
+				Formula za boju je<br>
+				C = Kd Cd L(l * n)<br>
+				Gde je Cd boja materijala<br>
+				L je boja svetlosti<br>
+				l je pravac svetla<br>
+				Kd je refleksijam aterijala<br><br>
+
+				Danasnji moderni shaderi su graficki programi koji nisu ograniceni na prosto racunanje boje. Postoje<br>
+				a) geometry shaderi - kreiraju listu trouglova koji ce biti procesirani<br>
+				b) tessellation shaderi - uzmu high-level opis neke povrsine i prave listu trouglova od nje<br>
+				c) vertex shaderi<br>
+				d) fragment shaderi<br>
+				Ono sto je jos bitno je da je moguce napraviti program koji ce jednostavno iskljuciti neki deo pipelinea. Tako da se nakon geometry i teselation shadera podaci vrate u CPU pre dalje obrade.
+			</p>
+		</div>
+		<div class="one-question">
+			<h1>
+				67 (33.7) Implementacija sejdera za efekat crtanog filma
+			</h1>
+			<p>
+				Uprosteno, postoje dve tehnike.<br>
+				Prva, ne narocito dobra jeste racun inteziteta svake ugaone tacke u vertex shaderu, tako da Gl nakon toga rasiri ovu boju po celom trouglu
+				Program bi izgledao ovako (pseudo kod)<br><br>
+
+				konstante za intezitet, svetlo...<br>
+				main<br>
+
+				zatim ide main od shadera<br>
+				njegova logika je prosto if else. mozemo definisati razlicite granice koje ce imati razlicite parametre za odredjivanje boje fragmenta.<br>
+				if intesity > 0.95...<br><br>
+
+				ova verzija moze da se blago poboljsa tako sto se umesto globalne konstane intesity definise unutar same main metode shadera<br>
+				float intesity = racun...<br>
+				dalje idu isti if else<br><br>
+
+				Druga tehnika bi radila pomocu prividne atmosperic perspective, gde bi objekti koji su dalji od oka bili predstavljeni plavom bojom. Kod ovog sejdera je jednostavan<br><br>
+
+				konstane za poziciju oka, udaljenost oka...<br><br>
+				main programa<br><br>
+
+				main shadera<br>
+				wsNormal = normalize(wsInterpolatedNormal)<br>
+				wsEye = normalize(wsInterpolatedEye)<br>
+				selector.x = 1 + dot(wsNormal, wsEye) / 2<br>
+				selector.y = dist/2<br>
+				boja = texture2D(xtoonmap, selector).rgb<br>
+			</p>
+		</div>
 	</body>
 </html>
